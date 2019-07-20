@@ -4,3 +4,8 @@
   grid-gap: 1rem;
   align-items: center;
 }
+
+.button {
+  grid-column-start: 1;
+  grid-column-end: 3;
+}

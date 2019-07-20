@@ -14,6 +14,11 @@ const Form = () => (
       type="password"
       className="shadow border rounded py-2 px-3 leading-tight focus:outline-none focus:shadow-inner"
     />
+    <button
+      className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${styles.button}`}
+    >
+      Start snipping my recipes!
+    </button>
   </form>
 )
 
