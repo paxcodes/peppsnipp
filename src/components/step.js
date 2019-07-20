@@ -6,7 +6,9 @@ import styles from "../css/step.module.css"
 
 const Step = ({ children }) => (
   <div className={styles.step}>
-    <div>{children}</div>
+    <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      {children}
+    </div>
     <img src={arrow} alt="next step" className="my-10 h-6" />
   </div>
 )
