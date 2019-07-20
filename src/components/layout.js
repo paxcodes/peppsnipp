@@ -24,12 +24,18 @@ const Layout = ({ children }) => {
   `)
 
   return (
-    <div className="container mx-auto px-5 text-center">
+    <div className="root container mx-auto px-5">
       <Header siteTitle={data.site.siteMetadata.title} />
-      <main>{children}</main>
+      <main className="text-center">{children}</main>
       <footer>
-        © {new Date().getFullYear()}, Built by{" "}
-        <a href="https://margret.pw">Pax</a>
+        © {new Date().getFullYear()} Built by{" "}
+        <a
+          href="https://margret.pw"
+          className="border-b border-dotted text-gray-700"
+        >
+          Pax
+        </a>{" "}
+        with Gatsby 🚀
       </footer>
     </div>
   )
