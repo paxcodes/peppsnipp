@@ -22,6 +22,15 @@ const IndexPage = () => (
       </h2>
       <Form />
     </Step>
+    <Step className="max-w-lg">
+      <h2 className="uppercase font-bold mb-4">
+        Let the App Download Your Recipes
+      </h2>
+      <p>
+        The app will take a screenshot of your recipes and upload them to your
+        Dropbox account
+      </p>
+    </Step>
   </Layout>
 )
 
