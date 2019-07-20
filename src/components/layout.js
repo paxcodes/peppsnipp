@@ -24,10 +24,10 @@ const Layout = ({ children }) => {
   `)
 
   return (
-    <div className="root container mx-auto px-5">
+    <div className="root container mx-auto px-5 text-gray-900 bg-blue-100">
       <Header siteTitle={data.site.siteMetadata.title} />
       <main className="text-center">{children}</main>
-      <footer>
+      <footer className="p-8">
         © {new Date().getFullYear()} Built by{" "}
         <a
           href="https://margret.pw"

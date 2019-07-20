@@ -10,7 +10,9 @@ const IndexPage = () => (
     <SEO title="Home" />
     <Step>
       <a href="/" className="uppercase font-bold">
+        <h2>
         Connect to <img alt="Dropbox" src={dropbox} className="h-8" />
+        </h2>
       </a>
     </Step>
   </Layout>
