@@ -7,12 +7,12 @@ import styles from "../css/header.module.css"
 
 const Header = ({ siteTitle }) => (
   <header>
-    <h1 className={`text-4xl p-8 ${styles.header}`}>
-      <Link to="/">
+    <Link to="/">
+      <h1 className={`text-4xl p-8 ${styles.header}`}>
         <img alt="" src={logo} className={`rounded-full mb-8 ${styles.logo}`} />
-      </Link>
-      <Link to="/">{siteTitle}</Link>
-    </h1>
+        <span>{siteTitle}</span>
+      </h1>
+    </Link>
   </header>
 )
 
