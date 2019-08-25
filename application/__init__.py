@@ -1,5 +1,4 @@
 from flask import Flask
-from application import dropbox
 from dotenv import load_dotenv
 
 def create_app():
@@ -8,6 +7,7 @@ def create_app():
   app.config.from_object('config.Config')
 
   with app.app_context():
+    from application import dropbox
     app.register_blueprint(dropbox.dropbox_blueprint)
 
     return app
