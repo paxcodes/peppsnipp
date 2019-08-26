@@ -10,11 +10,12 @@ const IndexPage = () => (
   <Layout>
     <SEO title="Home" />
     <Step>
-      <a href="/" className="uppercase font-bold">
-        <h2>
-          Connect to <img alt="Dropbox" src={dropbox} className="h-8" />
+      <a href="/">
+        <h2 className="uppercase font-bold mb-4">
+          Connect to <img alt="Dropbox" src={dropbox} className="h-8 mx-auto" />
         </h2>
       </a>
+      <p>We will save screenshots of your recipes in your Dropbox account.</p>
     </Step>
     <Step>
       <h2 className="uppercase font-bold mb-4">
