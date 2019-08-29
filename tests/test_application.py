@@ -3,7 +3,7 @@ from flask import session
 
 def test_appLoadsConfig():
   app = create_app()
-  assert app.config['FLASK_APP'] == "Pepperplate Snipper"
+  assert app.config['FLASK_APP'] == "application"
 
 def test_session():
   app = create_app()
