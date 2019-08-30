@@ -35,6 +35,7 @@ Werkzeug = "==0.15.5"
 flask-session = "*"
 redis = "*"
 pyopenssl = "*"
+dropbox = "*"
 
 [requires]
 python_version = "3.7"
