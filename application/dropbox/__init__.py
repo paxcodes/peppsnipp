@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, session, redirect
+from flask import Blueprint, jsonify, session, redirect, request
 from flask import current_app as app
 from dropbox.oauth import *
 
@@ -15,6 +15,15 @@ def hello_dropbox():
 def dropbox_oauth_start():
   authorize_url = get_dropbox_auth_flow().start()
   return redirect(authorize_url)
+  
+@dropbox_blueprint.route('/dropbox/finish')
+def dropbox_oauth_finish():
+  oauth_result = get_dropbox_auth_flow().finish(request.args)
+  session['dropbox-access-token'] = oauth_result.access_token
+
+  return jsonify({
+    "msg": "Successfully authenticated!"
+  })
   
 def get_dropbox_auth_flow():
   DROPBOX_APP_KEY = app.config['DROPBOX_APP_KEY']
