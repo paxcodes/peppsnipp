@@ -12,7 +12,10 @@ def create_app():
   sess.init_app(app)
   
   with app.app_context():
+    from application import main
     from application import dropbox
+    
+    app.register_blueprint(main.main_blueprint)
     app.register_blueprint(dropbox.dropbox_blueprint)
 
     return app

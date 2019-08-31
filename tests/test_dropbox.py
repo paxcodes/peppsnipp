@@ -37,9 +37,12 @@ def test_dropbox_oauth_finish(monkeypatch):
     
     monkeypatch.setattr(DropboxOAuth2Flow, "finish", mock_dropbox_finish)
     
-    # Mock whatever finish returns.
     client.get('/dropbox/finish', query_string=query_string)
     assert session['dropbox-access-token'] == oauth2flow_result.access_token
     
     
-  
+def test_dropbox_oauth_finish_handles_badrequestexception():
+  app = create_app()
+  with app.test_client() as client:
+    response = client.get('/dropbox/finish')
+    assert response.status_code == 400
