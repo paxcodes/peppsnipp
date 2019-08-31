@@ -29,6 +29,8 @@ def dropbox_oauth_finish():
   except BadRequestException as e:
     error_message = e.args[0]
     raise APIError(error_message)
+  except BadStateException:
+    return redirect("/dropbox/start")
     
     
   

@@ -46,3 +46,20 @@ def test_dropbox_oauth_finish_handles_badrequestexception():
   with app.test_client() as client:
     response = client.get('/dropbox/finish')
     assert response.status_code == 400
+    
+def test_dropbox_oauth_finish_handles_badstateexception():
+  app = create_app()
+  with app.test_client() as client:
+    """
+    This test triggers a BadStateException by not setting
+    session['dropbox-auth-csrf-token'] before requesting
+    /dropbox/finish
+    """
+    
+    query_string = { 'state': 'sojhqf2nGunEIxI', 'code': 'pQbO_7SMV2AAAAAAAAAAL'}
+    response = client.get('/dropbox/finish', query_string=query_string)
+    
+    expected = { 'path': '/dropbox/start', 'code': 302 }
+    
+    assert response.status_code == expected['code']
+    assert urlparse(response.location).path == expected['path']
