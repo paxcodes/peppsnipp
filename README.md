@@ -2,7 +2,7 @@ This project is ongoing.
 
 ---
 
-Backend code of the Pepperplate Snipper. The Pepperplate Snipper takes a screenshot of the recipes in your Pepperplate account. 
+Backend code of the Pepperplate Snipper. The Pepperplate Snipper takes a screenshot of the recipes in your Pepperplate account and uploads them to your Dropbox account. 
 
 Built with ![flask][logo]
 
