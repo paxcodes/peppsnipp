@@ -31,6 +31,8 @@ def dropbox_oauth_finish():
     raise APIError(error_message)
   except BadStateException:
     return redirect("/dropbox/start")
+  except CsrfException as e:
+    raise APIError("API encountered an error", 403)
     
     
   

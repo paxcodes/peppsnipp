@@ -63,3 +63,13 @@ def test_dropbox_oauth_finish_handles_badstateexception(client):
   assert response.status_code == expected['code']
   assert urlparse(response.location).path == expected['path']
 
+def test_dropbox_oauth_finish_handles_csrfexception(client):
+  with client.session_transaction() as sess:
+    sess['dropbox-auth-csrf-token'] = 'sojhqf2nGunEIxI-MdePeg%3D%3D'
+    
+  query_string = { 'state': 'sojhqf2nGunEIxI', 'code': 'pQbO_7SMV2AAAAAAAAAAL'}
+  response = client.get('/dropbox/finish', query_string=query_string)
+  
+  expected_code = 403
+  assert response.status_code == expected_code
+  
