@@ -73,3 +73,17 @@ def test_dropbox_oauth_finish_handles_csrfexception(client):
   expected_code = 403
   assert response.status_code == expected_code
   
+def test_dropbox_oauth_finish_handles_notapprovedexception(client):
+  query_string = {
+    'state': '6v9KgpO7jf9m5hATX_ujsg%3D%3D',
+    'error_description': 'The+user+chose+not+to+give+your+app+access+to+their+Dropbox+account.',
+    'error': 'access_denied'
+  }
+  
+  with client.session_transaction() as sess:
+    sess['dropbox-auth-csrf-token'] = query_string['state']
+  
+  response = client.get('/dropbox/finish', query_string=query_string)
+  data = response.get_json()
+  
+  assert data['error'] == 'access_denied'

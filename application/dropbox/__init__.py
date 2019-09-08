@@ -33,7 +33,11 @@ def dropbox_oauth_finish():
     return redirect("/dropbox/start")
   except CsrfException as e:
     raise APIError("API encountered an error", 403)
-    
+  except NotApprovedException:
+    return jsonify({
+      "message": "You did not give us permission to access your Dropbox account.",
+      "error": request.args['error']
+    })
     
   
 def get_dropbox_auth_flow():
