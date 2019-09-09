@@ -10,7 +10,7 @@ const IndexPage = () => (
   <Layout>
     <SEO title="Home" />
     <Step>
-      <a href="/">
+      <a href={`${process.env.API_URL}/dropbox/start`} data-cy="dropbox-oauth" className="block">
         <h2 className="uppercase font-bold mb-4">
           Connect to <img alt="Dropbox" src={dropbox} className="h-8 mx-auto" />
         </h2>
