@@ -18,4 +18,12 @@ describe("The 'Dropbox' step", () => {
     cy.get('[data-cy=dropbox-oauth]').click();
     cy.window().its('open').should('be.called');
   });
+  
+  context("When visiting the oAuth redirect link directly", () => {
+    specify("it will cause an error message to print", () => {
+      cy.visit("/dropbox-finish");
+      cy.getTestElement("errorText").should('be.visible');
+    });  
+  });
+  
 });
