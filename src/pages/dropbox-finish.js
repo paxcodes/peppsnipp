@@ -1,4 +1,5 @@
 import React from "react"
+import axios from "axios"
 
 import "../css/global.css"
 
@@ -19,6 +20,16 @@ class DropboxFinishPage extends React.Component {
         isError: true,
         finalMessage: "You are not supposed to visit this URL directly, sire!"
       });
+    }
+    else {
+      const query = window.location.search.substring(1);
+      axios.get(`${process.env.API_URL}/dropbox/finish?${query}`)
+        .then(response => {
+          
+        })
+        .catch(error => {
+          
+        });
     }
   }
   

@@ -26,4 +26,28 @@ describe("The 'Dropbox' step", () => {
     });  
   });
   
+  context("When Dropbox redirects back to our app", () => {
+    specify("the app calls the api to finish the oAuth process", () => {
+      const expectedParams = new URLSearchParams({
+        'state': 'sojhqf2nGunEIxI-MdePeg==',
+        'code': 'pQbO_7SMV2AAAAAAAAAAL_Tpd0uws8RpRTO2OBQAXwI'
+      });
+      
+      cy.server();
+      cy.route(`https://localhost:5000/dropbox/finish?state=*&code=*`).as('finishOAuthFlow');
+      
+      cy.visit("/dropbox-finish?" + expectedParams.toString(), {
+        onBeforeLoad(win) {
+          win.opener = win;
+        }
+      });
+      
+      cy.wait('@finishOAuthFlow').then((xhr) => {
+        const actualURL = new URL(xhr.url);
+        const actualParams = new URLSearchParams(actualURL.search);
+        expect(actualParams.get("state")).to.equal(expectedParams.get("state"));
+        expect(actualParams.get("code")).to.equal(expectedParams.get("code"));
+      });
+    });
+  })
 });
