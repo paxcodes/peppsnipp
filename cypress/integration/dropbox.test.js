@@ -49,5 +49,27 @@ describe("The 'Dropbox' step", () => {
         expect(actualParams.get("code")).to.equal(expectedParams.get("code"));
       });
     });
-  })
+  });
+  
+  context("When the API finishes the oAuth process", () => {
+    specify("the popup should notify parent window the result", () => {
+      const expectedParams = new URLSearchParams({
+        'state': 'sojhqf2nGunEIxI-MdePeg==',
+        'code': 'pQbO_7SMV2AAAAAAAAAAL_Tpd0uws8RpRTO2OBQAXwI'
+      });
+      
+      const stubbedResponse = { "success": true };
+      
+      cy.server();
+      cy.route(`https://localhost:5000/dropbox/finish?state=*&code=*`,  stubbedResponse).as('finishOAuthFlow');
+      
+      cy.visit("/dropbox-finish?" + expectedParams.toString(), {
+        onBeforeLoad(win) {
+          win.opener = win;
+          cy.stub(win.opener, 'postMessage');
+        }
+      });
+      
+      cy.window().its('opener.postMessage').should('be.calledWith', stubbedResponse);
+    });
 });
