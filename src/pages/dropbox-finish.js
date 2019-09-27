@@ -28,7 +28,7 @@ class DropboxFinishPage extends React.Component {
           window.opener.postMessage(response.data, "https://localhost:8001")
         })
         .catch(error => {
-          
+          window.opener.postMessage(error.response.data, "https://localhost:8001")
         });
     }
   }

@@ -52,7 +52,7 @@ describe("The 'Dropbox' step", () => {
   });
   
   context("When the API finishes the oAuth process", () => {
-    specify("the popup should notify parent window the result", () => {
+    specify("the popup should notify parent window the successful response", () => {
       const expectedParams = new URLSearchParams({
         'state': 'sojhqf2nGunEIxI-MdePeg==',
         'code': 'pQbO_7SMV2AAAAAAAAAAL_Tpd0uws8RpRTO2OBQAXwI'
@@ -72,4 +72,30 @@ describe("The 'Dropbox' step", () => {
       
       cy.window().its('opener.postMessage').should('be.calledWith', stubbedResponse);
     });
+
+    specify("the popup should notify parent window the failed response", () => {
+      const expectedParams = new URLSearchParams({
+        'state': 'sojhqf2nGunEIxI-MdePeg==',
+        'code': 'pQbO_7SMV2AAAAAAAAAAL_Tpd0uws8RpRTO2OBQAXwI'
+      });
+      
+      const stubbedResponse = { "success": false }
+      
+      cy.server();
+      cy.route({
+        'url': `https://localhost:5000/dropbox/finish?state=*&code=*`,
+        'response': stubbedResponse,
+        'status': 400,
+      }).as('finishOAuthFlow');
+      
+      cy.visit("/dropbox-finish?" + expectedParams.toString(), {
+        onBeforeLoad(win) {
+          win.opener = win;
+          cy.stub(win.opener, 'postMessage');
+        }
+      });
+      
+      cy.window().its('opener.postMessage').should('be.calledWith', stubbedResponse);
+    });
+  });
 });
