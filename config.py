@@ -11,7 +11,7 @@ class Config:
   DEBUG = getenv('DEBUG')
 
   SESSION_TYPE = getenv('SESSION_TYPE')
-  SESSION_REDIS = redis.from_url(getenv('SESSION_REDIS'))
+  REDIS_URL = redis.from_url(getenv('REDIS_URL'))
   
   DROPBOX_APP_KEY = getenv('DROPBOX_APP_KEY')
   DROPBOX_APP_SECRET = getenv('DROPBOX_APP_SECRET')
