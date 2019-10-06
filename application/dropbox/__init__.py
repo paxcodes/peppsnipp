@@ -43,7 +43,7 @@ def dropbox_oauth_finish():
 def get_dropbox_auth_flow():
   DROPBOX_APP_KEY = app.config['DROPBOX_APP_KEY']
   DROPBOX_APP_SECRET = app.config['DROPBOX_APP_SECRET']
-  REDIRECT_URI = app.config['URL'] + "/dropbox/finish"
+  REDIRECT_URI = app.config['CLIENT_URL'] + "/dropbox-finish"
   return DropboxOAuth2Flow(DROPBOX_APP_KEY, DROPBOX_APP_SECRET, 
     REDIRECT_URI, session, "dropbox-auth-csrf-token")
   

@@ -5,6 +5,7 @@ class Config:
   FLASK_APP = getenv('FLASK_APP')
   SECRET_KEY = getenv('SECRET_KEY')
   URL = getenv('URL')
+  CLIENT_URL = getenv('CLIENT_URL')
   
   FLASK_ENV = getenv('FLASK_ENV')
   TESTING = getenv('TESTING', False)
