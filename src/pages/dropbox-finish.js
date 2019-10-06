@@ -23,7 +23,9 @@ class DropboxFinishPage extends React.Component {
     }
     else {
       const query = window.location.search.substring(1);
-      axios.get(`${process.env.API_URL}/dropbox/finish?${query}`)
+      axios.get(`${process.env.API_URL}/dropbox/finish?${query}`, {
+        withCredentials: true
+      })
         .then(response => {
           window.opener.postMessage(response.data, "https://localhost:8001")
         })
