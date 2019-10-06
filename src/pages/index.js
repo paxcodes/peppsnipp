@@ -7,9 +7,15 @@ import Form from "../components/form"
 import dropbox from "../images/dropbox.svg"
 
 const IndexPage = () => {
+  let popup;
   function openNewWindow(e) {
     e.preventDefault();
-    window.open(e.currentTarget.attributes.href.value, "newwindow", "width=670, height=825, location=0");
+    popup = window.top.open(e.currentTarget.attributes.href.value, "DropboxOAuth", "width=670, height=825, location=0");
+    window.addEventListener('message', updateDropboxStep)
+  }
+  
+  function updateDropboxStep() {
+    popup.close()
   }
   
   return (

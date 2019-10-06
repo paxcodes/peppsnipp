@@ -97,5 +97,22 @@ describe("The 'Dropbox' step", () => {
       
       cy.window().its('opener.postMessage').should('be.calledWith', stubbedResponse);
     });
+
+    specify("the parent window should close the popup", () => {
+      cy.visit("/", {
+        onBeforeLoad: function(win) {
+           cy.spy(win.top, 'open').as('createPopup');
+        }
+      });
+      
+      cy.get("[data-cy=dropbox-oauth]").click();
+      cy.get('@createPopup').should('be.called').then(function(spy) {
+        const popup = spy.returnValues[0];
+        cy.spy(popup, 'close').as('closePopup');
+      });
+      
+      cy.window().trigger('message');
+      cy.get('@closePopup').should('be.called');
+    });
   });
 });
