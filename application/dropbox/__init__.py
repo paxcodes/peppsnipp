@@ -21,7 +21,7 @@ def dropbox_oauth_start():
 
 
 @dropbox_blueprint.route('/dropbox/finish')
-@cross_origin(methods='GET', origins=app.config['CLIENT_URL'])
+@cross_origin(methods='GET', origins=app.config['CLIENT_URL'], supports_credentials=True)
 def dropbox_oauth_finish():
   try:
     oauth_result = get_dropbox_auth_flow().finish(request.args)
