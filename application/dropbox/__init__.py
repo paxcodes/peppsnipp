@@ -1,5 +1,7 @@
 from flask import Blueprint, jsonify, session, redirect, request
 from flask import current_app as app
+from flask_cors import cross_origin
+
 from application.api_error import APIError
 from dropbox.oauth import *
 
@@ -19,6 +21,7 @@ def dropbox_oauth_start():
 
 
 @dropbox_blueprint.route('/dropbox/finish')
+@cross_origin(methods='GET', origins=app.config['CLIENT_URL'])
 def dropbox_oauth_finish():
   try:
     oauth_result = get_dropbox_auth_flow().finish(request.args)
