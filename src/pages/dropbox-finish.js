@@ -22,15 +22,17 @@ class DropboxFinishPage extends React.Component {
       });
     }
     else {
+      this.origin = this.props.location.protocol + "//" + this.props.location.hostname + ":" +
+      this.props.location.port;
       const query = window.location.search.substring(1);
       axios.get(`${process.env.API_URL}/dropbox/finish?${query}`, {
         withCredentials: true
       })
         .then(response => {
-          window.opener.postMessage(response.data, "https://localhost:8001")
+          window.opener.postMessage(response.data, this.origin)
         })
         .catch(error => {
-          window.opener.postMessage(error.response.data, "https://localhost:8001")
+          window.opener.postMessage(error.response.data, this.origin)
         });
     }
   }
