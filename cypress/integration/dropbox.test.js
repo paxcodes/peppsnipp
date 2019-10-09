@@ -11,12 +11,12 @@ describe("The 'Dropbox' step", () => {
   it('opens a new window when clicked', () => {
     cy.visit("/", {
       onBeforeLoad(win) {
-        cy.stub(win, 'open');
+        cy.stub(win.top, 'open');
       }
     });
     
     cy.get('[data-cy=dropbox-oauth]').click();
-    cy.window().its('open').should('be.called');
+    cy.window().its('top.open').should('be.called');
   });
   
   context("When visiting the oAuth redirect link directly", () => {
