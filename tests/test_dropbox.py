@@ -40,7 +40,9 @@ def test_dropbox_oauth_finish(client, monkeypatch):
     
   monkeypatch.setattr(DropboxOAuth2Flow, "finish", mock_dropbox_finish)
   
-  client.get('/dropbox/finish', query_string=query_string)
+  response = client.get('/dropbox/finish', query_string=query_string)
+  data = response.get_json()
+  assert data['success'] == True
   assert session['dropbox-access-token'] == oauth2flow_result.access_token
     
     

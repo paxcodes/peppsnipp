@@ -27,7 +27,7 @@ def dropbox_oauth_finish():
     oauth_result = get_dropbox_auth_flow().finish(request.args)
     session['dropbox-access-token'] = oauth_result.access_token
     return jsonify({
-      "msg": "Successfully authenticated!"
+      "success": True,
     })
   except BadRequestException as e:
     error_message = e.args[0]
@@ -38,6 +38,7 @@ def dropbox_oauth_finish():
     raise APIError("API encountered an error", 403)
   except NotApprovedException:
     return jsonify({
+      "success": False,
       "message": "You did not give us permission to access your Dropbox account.",
       "error": request.args['error']
     })
