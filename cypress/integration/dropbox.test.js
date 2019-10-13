@@ -111,7 +111,7 @@ describe("The 'Dropbox' step", () => {
         cy.spy(popup, 'close').as('closePopup');
       });
       
-      cy.window().trigger('message');
+      cy.window().trigger('message',{ data: { success: true } });
       cy.get('@closePopup').should('be.called');
     });
   });
