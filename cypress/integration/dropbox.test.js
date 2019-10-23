@@ -114,5 +114,14 @@ describe("The 'Dropbox' step", () => {
       cy.window().trigger('message',{ data: { success: true } });
       cy.get('@closePopup').should('be.called');
     });
+    
+    specify("the Dropbox step should be updated (authentication successful)", () => {
+      cy.visit("/");
+      cy.get("[data-cy=dropbox-oauth]").click();
+      cy.window().trigger('message', { data: { success: true } });
+      
+      cy.get("[data-cy=dropbox-oauth]").should("not.be.visible");
+      cy.get("[data-cy=dropbox-oauth-success]").should("be.visible");
+    });
   });
 });
