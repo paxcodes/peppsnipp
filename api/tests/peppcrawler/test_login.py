@@ -1,7 +1,9 @@
-import os
 import pytest
-from settings import load as loadSettings
-from PepperplateCrawler import PepperplateCrawler
+from os import getenv
+from dotenv import load_dotenv
+
+from peppcrawler import PepperplateCrawler
+
 
 @pytest.fixture()
 def crawler():
@@ -14,9 +16,9 @@ def test_canVisitLoginPage(crawler):
   assert response['title'] == 'Pepperplate'
   
 def test_canLoginToPepperplate(crawler):
-  loadSettings()
-  email = os.getenv("PEPPERPLATE_EMAIL")
-  password = os.getenv("PEPPERPLATE_PW")
+  load_dotenv()
+  email = getenv("PEPPERPLATE_EMAIL")
+  password = getenv("PEPPERPLATE_PW")
   crawler.visitLoginPage()
   recipe_total = crawler.loginToPepperplate(email, password)
   crawler.quitDriver()
