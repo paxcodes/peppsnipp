@@ -2,7 +2,9 @@ This project is ongoing.
 
 ---
 
-Front-end code of the Pepperplate Snipper. The Pepperplate Snipper takes a screenshot of the recipes in your Pepperplate account. 
+**The Pepperplate Snipper** takes a screenshot of the recipes in your Pepperplate account and uploads them to your Dropbox account. 
 
-🚀 Powered by [Gatsby](https://github.com/gatsbyjs/gatsby).
+Built with
 
+<img src="./assets/flask.svg" width="120" alt="flask logo" valign="middle" />
+<img src="./assets/gatsby.svg" width="120" alt="gatsby logo" valign="middle" />
