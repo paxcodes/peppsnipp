@@ -1,20 +1,22 @@
 import os
+
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
-from settings import load as loadSettings
+from dotenv import load_dotenv
 
 class PepperplateCrawler:
   loginURL = "https://www.pepperplate.com/login.aspx"
   
   def __init__(self):
-    loadSettings()
+    load_dotenv()
     self.startDriver()
     
   def startDriver(self):
     options = Options()
     options.headless = True
     print('Browser: Starting...')
-    self.driver = webdriver.Firefox(options=options, executable_path='geckodriver/' + os.getenv("OS"))
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    self.driver = webdriver.Firefox(options=options, executable_path=dir_path + '/geckodriver/' + os.getenv("OS"))
     self.driver.implicitly_wait(10)
     print('Browser: Started!')
     
