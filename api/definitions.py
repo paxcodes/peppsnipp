@@ -1,3 +1,5 @@
-import os
+from os import path
 
-ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+PYTHON_APP_DIR = path.dirname(path.abspath(__file__))
+ROOT_APP_DIR = path.dirname(PYTHON_APP_DIR)
+FIXTURE_DIR = path.join(ROOT_APP_DIR, 'gatsby/cypress/fixtures')
