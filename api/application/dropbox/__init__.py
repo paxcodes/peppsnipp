@@ -24,16 +24,14 @@ def dropbox_oauth_finish():
     oauth_result = get_dropbox_auth_flow().finish(request.args)
     session['dropbox-access-token'] = oauth_result.access_token
     return jsonify({
-      "msg": "Successfully authenticated!"
+      "success": True
     })
   except BadRequestException as e:
     error_message = e.args[0]
     raise APIError(error_message)
   except BadStateException:
     return redirect("/dropbox/start")
-    
-    
-  
+
 def get_dropbox_auth_flow():
   DROPBOX_APP_KEY = app.config['DROPBOX_APP_KEY']
   DROPBOX_APP_SECRET = app.config['DROPBOX_APP_SECRET']
