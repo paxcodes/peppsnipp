@@ -37,6 +37,12 @@ class DropboxStep extends React.Component {
                   data-cy="dropbox-oauth-success"
                   className="uppercase font-bold mb-4"
                >
+                  <p className="px-2 py-4 bg-green-200 mb-8 text-green-900 font-bold text-sm">
+                     Success!{" "}
+                     <span role="img" aria-label="celebrate!">
+                        🎉
+                     </span>
+                  </p>
                   Connected to
                   <img
                      alt="Dropbox"
@@ -79,5 +85,12 @@ function ErrorMessage(props) {
       return null;
    }
 
-   return <p data-cy="dropbox-oauth-fail">{props.msg} Try again.</p>;
+   return (
+      <p
+         data-cy="dropbox-oauth-fail"
+         className="px-2 py-4 bg-red-200 mb-8 text-red-900 font-bold text-sm"
+      >
+         {props.msg}
+      </p>
+   );
 }

@@ -1,6 +1,7 @@
 {
    "data": {
-      "msg": "Missing query parameter 'state'.",
+      "error": "Missing query parameter 'state'.",
+      "msg": "We apologize for the inconvenience, but an error occurred. Please try again.",
       "success": false
    }
 }
