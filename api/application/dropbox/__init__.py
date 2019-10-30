@@ -26,11 +26,11 @@ def dropbox_oauth_finish():
         oauth_result = get_dropbox_auth_flow().finish(request.args)
         session['dropbox-access-token'] = oauth_result.access_token
         return jsonify({
-      "success": True
+            "success": True,
+            "msg": "",
         })
     except BadRequestException as e:
-        error_message = e.args[0]
-        raise APIError(error_message)
+        raise APIError(e)
     except BadStateException:
         return redirect("/dropbox/start")
 
