@@ -5,6 +5,8 @@ from flask import session
 
 import pytest
 
+from tests import saveResponse
+
 @pytest.fixture
 def client():
   app = create_app()
@@ -40,12 +42,14 @@ def test_dropbox_oauth_finish(client, monkeypatch):
     
   monkeypatch.setattr(DropboxOAuth2Flow, "finish", mock_dropbox_finish)
   
-  client.get('/dropbox/finish', query_string=query_string)
+  response = client.get('/dropbox/finish', query_string=query_string)
+  saveResponse(response, resource = "oauth")
   assert session['dropbox-access-token'] == oauth2flow_result.access_token
     
     
 def test_dropbox_oauth_finish_handles_badrequestexception(client):
   response = client.get('/dropbox/finish')
+  saveResponse(response, resource = "oauth")
   assert response.status_code == 400
     
 def test_dropbox_oauth_finish_handles_badstateexception(client):

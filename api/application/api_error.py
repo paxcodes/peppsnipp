@@ -12,5 +12,6 @@ class APIError(Exception):
     
   def to_dict(self):
     rv = dict(self.payload or ())
-    rv['message'] = self.message
+    rv['msg'] = self.message
+    rv['success'] = False
     return rv
