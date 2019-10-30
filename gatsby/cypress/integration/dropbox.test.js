@@ -20,13 +20,9 @@ describe("The 'Dropbox' step", () => {
    });
 
    it("opens a new window when clicked", () => {
-      cy.visit("/", {
-         onBeforeLoad(win) {
-            cy.stub(win.top, "open");
-         }
-      });
-
+      cy.visit("/");
       cy.get("[data-cy=dropbox-oauth]").click();
+
       cy.window()
          .its("top.open")
          .should("be.called");
@@ -127,14 +123,10 @@ context("When the API finishes the oAuth process", () => {
    });
 
    specify("the parent window should close the popup", () => {
-      cy.visit("/", {
-         onBeforeLoad: function(win) {
-            cy.spy(win.top, "open").as("createPopup");
-         }
-      });
+      cy.visit("/");
 
       cy.get("[data-cy=dropbox-oauth]").click();
-      cy.get("@createPopup")
+      cy.get("@openAuthWindow")
          .should("be.called")
          .then(function(spy) {
             const popup = spy.returnValues[0];
