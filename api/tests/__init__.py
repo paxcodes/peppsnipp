@@ -6,20 +6,13 @@ from definitions import FIXTURE_DIR
 
 def saveResponse(response, resource, description=""):
     path = getFixturePath(response, resource, description)
-    data = prepareData(response)
+    data = {'data': response.json}
     saveResponseToPath(data, path)
 
 
 def getFixturePath(response, resource, description):
     name = resource + str(response.status_code) + description
     return Path(FIXTURE_DIR, name + '.json')
-
-
-def prepareData(response):
-    return {
-        'code': response.status_code,
-        'data': response.json
-    }
 
 
 def saveResponseToPath(data, path):

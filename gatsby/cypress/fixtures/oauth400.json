@@ -1,5 +1,4 @@
 {
-   "code": 400,
    "data": {
       "msg": "Missing query parameter 'state'.",
       "success": false
