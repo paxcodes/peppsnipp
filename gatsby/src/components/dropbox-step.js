@@ -6,13 +6,15 @@ class DropboxStep extends React.Component {
       super(props);
       this.state = {
          dropboxConnected: false,
-         dropboxFail: false
+         dropboxFail: false,
+         errorMessage: ""
       };
    }
 
    updateDropboxStep = e => {
       this.setState({
-         dropboxConnected: e.data.success
+         dropboxConnected: e.data.success,
+         errorMessage: e.data.msg
       });
       this.popup.close();
    };
@@ -43,17 +45,24 @@ class DropboxStep extends React.Component {
                   />
                </h2>
             ) : (
-               <a
-                  href={`${process.env.API_URL}/dropbox/start`}
-                  data-cy="dropbox-oauth"
-                  className="block"
-                  onClick={this.openNewWindow}
-               >
-                  <h2 className="uppercase font-bold mb-4">
-                     Connect to{" "}
-                     <img alt="Dropbox" src={dropbox} className="h-8 mx-auto" />
-                  </h2>
-               </a>
+               <>
+                  <ErrorMessage msg={this.state.errorMessage} />
+                  <a
+                     href={`${process.env.API_URL}/dropbox/start`}
+                     data-cy="dropbox-oauth"
+                     className="block"
+                     onClick={this.openNewWindow}
+                  >
+                     <h2 className="uppercase font-bold mb-4">
+                        Connect to{" "}
+                        <img
+                           alt="Dropbox"
+                           src={dropbox}
+                           className="h-8 mx-auto"
+                        />
+                     </h2>
+                  </a>
+               </>
             )}
             <p>
                We will save screenshots of your recipes in your Dropbox account.
@@ -64,3 +73,11 @@ class DropboxStep extends React.Component {
 }
 
 export default DropboxStep;
+
+function ErrorMessage(props) {
+   if (props.msg === "") {
+      return null;
+   }
+
+   return <p data-cy="dropbox-oauth-fail">{props.msg} Try again.</p>;
+}

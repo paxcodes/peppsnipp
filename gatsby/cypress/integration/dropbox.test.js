@@ -1,3 +1,14 @@
+Cypress.on("window:before:load", win => {
+   win.top.open = cy
+      .stub()
+      .as("openAuthWindow")
+      .callsFake(function(url, target, features, replace) {
+         return {
+            close: function() {}
+         };
+      });
+});
+
 describe("The 'Dropbox' step", () => {
    it("links to the dropbox/start API endpoint", () => {
       cy.visit("/");
@@ -145,4 +156,22 @@ context("When the API finishes the oAuth process", () => {
          cy.get("[data-cy=dropbox-oauth-success]").should("be.visible");
       }
    );
+
+   specify("the Dropbox step should be updated (oauth fail)", () => {
+      cy.fixture("oauth400").then(oauth400Data => {
+         cy.visit("/");
+         cy.get("[data-cy=dropbox-oauth]").click();
+         cy.get("@openAuthWindow")
+            .should("be.called")
+            .then(function(mock) {
+               const popup = mock.returnValues[0];
+               cy.stub(popup, "close").as("closePopup");
+            });
+         cy.window().trigger("message", oauth400Data);
+      });
+
+      cy.get("[data-cy=dropbox-oauth]").should("be.visible");
+      cy.get("[data-cy=dropbox-oauth-success]").should("not.be.visible");
+      cy.get("[data-cy=dropbox-oauth-fail]").should("be.visible");
+   });
 });
