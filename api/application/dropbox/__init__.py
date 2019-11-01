@@ -24,15 +24,26 @@ def dropbox_oauth_start():
 def dropbox_oauth_finish():
     try:
         oauth_result = get_dropbox_auth_flow().finish(request.args)
-        session['dropbox-access-token'] = oauth_result.access_token
-        return jsonify({
-            "success": True,
-            "msg": "",
-        })
     except BadRequestException as e:
         raise APIError(e)
     except BadStateException:
         return redirect("/dropbox/start")
+    except CsrfException as e:
+        raise APIError(e, status_code=403)
+    except NotApprovedException as e:
+        return jsonify({
+            "success": False,
+            "msg": ("Our app was not approved to connect with your "
+                    "Dropbox account. However, the app needs to connect with "
+                    "your Dropbox to upload the recipes. If you change your "
+                    "mind, feel free to try again.")
+        })
+
+    session['dropbox-access-token'] = oauth_result.access_token
+    return jsonify({
+        "success": True,
+        "msg": "",
+    })
 
 
 def get_dropbox_auth_flow():

@@ -1,4 +1,6 @@
 from dropbox.oauth import BadRequestException
+from dropbox.oauth import NotApprovedException
+from dropbox.oauth import CsrfException
 from flask import jsonify
 
 
@@ -20,7 +22,8 @@ class APIError(Exception):
         return rv
 
     def get_error_message_for_user(self):
-        if isinstance(self.originalException, BadRequestException):
+        if (isinstance(self.originalException, BadRequestException) or
+                isinstance(self.originalException, CsrfException)):
             return ("We apologize for the inconvenience, "
                     "but an error occurred. Please try again.")
         return ""
