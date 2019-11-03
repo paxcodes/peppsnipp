@@ -1,6 +1,7 @@
 from dropbox.oauth import OAuth2FlowResult
 from dropbox.oauth import DropboxOAuth2Flow
 from dropbox.oauth import NotApprovedException
+from dropbox.oauth import ProviderException
 
 from application import create_app
 from urllib.parse import urlparse
@@ -100,4 +101,15 @@ def test_dropbox_oauth_handles_app_notapprovedexception(client, monkeypatch):
     response = client.get('/dropbox/finish')
 
     saveResponse(response, resource="oauth", description="NotApproved")
+    assert response.json['success'] == False
+
+
+def test_dropbox_oauth_handles_providerexception(client, monkeypatch):
+    def mock_dropbox_finish(*args):
+        raise ProviderException("Something went wrong.")
+    monkeypatch.setattr(DropboxOAuth2Flow, "finish", mock_dropbox_finish)
+
+    response = client.get('/dropbox/finish')
+
+    saveResponse(response, resource="oauth", description="DropboxError")
     assert response.json['success'] == False

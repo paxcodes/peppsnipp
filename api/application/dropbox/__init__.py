@@ -38,6 +38,8 @@ def dropbox_oauth_finish():
                     "your Dropbox to upload the recipes. If you change your "
                     "mind, feel free to try again.")
         })
+    except ProviderException as e:
+        raise APIError(e, status_code=403)
 
     session['dropbox-access-token'] = oauth_result.access_token
     return jsonify({

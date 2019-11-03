@@ -17,13 +17,7 @@ class APIError(Exception):
     def to_dict(self):
         rv = dict(self.payload or ())
         rv['error'] = self.originalException.args[0]
-        rv['msg'] = self.get_error_message_for_user()
+        rv['msg'] = ("We apologize for the inconvenience, "
+                     "but an error occurred. Please try again.")
         rv['success'] = False
         return rv
-
-    def get_error_message_for_user(self):
-        if (isinstance(self.originalException, BadRequestException) or
-                isinstance(self.originalException, CsrfException)):
-            return ("We apologize for the inconvenience, "
-                    "but an error occurred. Please try again.")
-        return ""
