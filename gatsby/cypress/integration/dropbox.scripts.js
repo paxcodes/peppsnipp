@@ -11,7 +11,6 @@ export const stubOpenAuthWindow = win => {
 
 export default {
    linkShouldBeDropboxStart: () => {
-      cy.visit("/");
       cy.get("[data-cy=dropbox-oauth]")
          .invoke("attr", "href")
          .then(href => {
@@ -19,12 +18,8 @@ export default {
          });
    },
    clickingLinkShouldOpenNewWindow: () => {
-      cy.visit("/");
       cy.get("[data-cy=dropbox-oauth]").click();
-
-      cy.window()
-         .its("top.open")
-         .should("be.called");
+      cy.get("@openAuthWindow").should("be.called");
    },
    appShouldPrintErrorMessage: () => {
       cy.visit("/dropbox-finish");

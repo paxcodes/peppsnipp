@@ -4,6 +4,7 @@ import tests from "./dropbox.scripts";
 Cypress.on("window:before:load", win => stubOpenAuthWindow(win));
 
 describe("The 'Dropbox' step", () => {
+   before(() => cy.visit("/"));
    it(
       "links to the dropbox/start API endpoint",
       tests.linkShouldBeDropboxStart
