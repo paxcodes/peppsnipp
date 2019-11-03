@@ -88,7 +88,7 @@ def test_dropbox_oauth_finish_handles_csrfexception(client):
 
     response = client.get('/dropbox/finish', query_string=query_string)
 
-    saveResponse(response, resource="oauthCsrf")
+    saveResponse(response, resource="oauth", description="Csrf")
     assert response.status_code == 403
 
 
@@ -99,5 +99,5 @@ def test_dropbox_oauth_handles_app_notapprovedexception(client, monkeypatch):
 
     response = client.get('/dropbox/finish')
 
-    saveResponse(response, resource="oauthNotApproved")
+    saveResponse(response, resource="oauth", description="NotApproved")
     assert response.json['success'] == False
