@@ -18,8 +18,10 @@ export default {
          });
    },
    clickingLinkShouldOpenNewWindow: () => {
-      cy.get("@openAuthWindow").should("be.called");
       cy.getTestElement("dropbox-oauth").click();
+      cy.window()
+         .its("top.open")
+         .should("be.called");
    },
    appShouldPrintErrorMessage: () => {
       cy.visit("/dropbox-finish");
