@@ -1,6 +1,7 @@
 import React from "react";
 
 import styles from "../css/form.module.css";
+import spinner from "../images/spinner.svg";
 
 class Form extends React.Component {
    constructor(props) {
@@ -12,6 +13,7 @@ class Form extends React.Component {
 
    loginToPepperplate = e => {
       e.preventDefault();
+      this.setState({ startLoginProcess: true });
    };
 
    render() {
@@ -35,16 +37,36 @@ class Form extends React.Component {
                type="password"
                className="shadow border rounded py-2 px-3 leading-tight focus:outline-none focus:shadow-inner"
             />
-            <button
-               data-cy="submitBtn"
-               className={`bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${styles.button}`}
-               onClick={this.loginToPepperplate}
-            >
-               Start snipping my recipes!
-            </button>
+            <div className={`${styles.buttonContainer} relative`}>
+               <button
+                  data-cy="submitBtn"
+                  className={`bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full`}
+                  onClick={this.loginToPepperplate}
+                  disabled={this.state.startLoginProcess}
+               >
+                  Start snipping my recipes!
+               </button>
+               <LoadingAnimation show={this.state.startLoginProcess} />
+            </div>
          </form>
       );
    }
 }
 
 export default Form;
+
+function LoadingAnimation(props) {
+   if (!props.show) {
+      return null;
+   }
+
+   return (
+      <img
+         className="absolute top-0 w-full"
+         style={{ height: 40 + "px" }}
+         src={spinner}
+         alt="logging in..."
+         data-cy="loadingAnimation"
+      />
+   );
+}
