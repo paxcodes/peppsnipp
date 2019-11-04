@@ -1,3 +1,30 @@
+const expectedApiDropboxFinishParams = new URLSearchParams({
+   state: "sojhqf2nGunEIxI-MdePeg==",
+   code: "pQbO_7SMV2AAAAAAAAAAL_Tpd0uws8RpRTO2OBQAXwI"
+});
+
+const stubOauthFinishApiEndpoint = (
+   stubbedResponse = { success: true },
+   statusCode = 200
+) => {
+   cy.server();
+   cy.route({
+      url: `https://localhost:5000/dropbox/finish?state=*&code=*`,
+      response: stubbedResponse,
+      status: statusCode
+   }).as("finishOAuthFlow");
+};
+
+const visitOauthRedirectUrl = () => {
+   cy.visit("/dropbox-finish?" + expectedApiDropboxFinishParams.toString(), {
+      onBeforeLoad(win) {
+         // todo is this necessary?
+         win.opener = win;
+         cy.stub(win.opener, "postMessage");
+      }
+   });
+};
+
 export const stubOpenAuthWindow = win => {
    win.top.open = cy
       .stub()
@@ -28,81 +55,33 @@ export default {
       cy.getTestElement("errorText").should("be.visible");
    },
    appShouldCallTheAPI: () => {
-      const expectedParams = new URLSearchParams({
-         state: "sojhqf2nGunEIxI-MdePeg==",
-         code: "pQbO_7SMV2AAAAAAAAAAL_Tpd0uws8RpRTO2OBQAXwI"
-      });
-
-      cy.server();
-      cy.route(`https://localhost:5000/dropbox/finish?state=*&code=*`).as(
-         "finishOAuthFlow"
-      );
-
-      cy.visit("/dropbox-finish?" + expectedParams.toString(), {
-         onBeforeLoad(win) {
-            win.opener = win;
-         }
-      });
+      stubOauthFinishApiEndpoint();
+      visitOauthRedirectUrl();
 
       cy.wait("@finishOAuthFlow").then(xhr => {
          const actualURL = new URL(xhr.url);
          const actualParams = new URLSearchParams(actualURL.search);
          expect(actualParams.get("state")).to.equal(
-            expectedParams.get("state")
+            expectedApiDropboxFinishParams.get("state")
          );
-         expect(actualParams.get("code")).to.equal(expectedParams.get("code"));
+         expect(actualParams.get("code")).to.equal(
+            expectedApiDropboxFinishParams.get("code")
+         );
       });
    },
    popupShouldNotifyMainWindowOfSuccess: () => {
-      const expectedParams = new URLSearchParams({
-         state: "sojhqf2nGunEIxI-MdePeg==",
-         code: "pQbO_7SMV2AAAAAAAAAAL_Tpd0uws8RpRTO2OBQAXwI"
-      });
-
-      const stubbedResponse = { success: true };
-
-      cy.server();
-      cy.route(
-         `https://localhost:5000/dropbox/finish?state=*&code=*`,
-         stubbedResponse
-      ).as("finishOAuthFlow");
-
-      cy.visit("/dropbox-finish?" + expectedParams.toString(), {
-         onBeforeLoad(win) {
-            win.opener = win;
-            cy.stub(win.opener, "postMessage");
-         }
-      });
-
+      stubOauthFinishApiEndpoint({ success: true });
+      visitOauthRedirectUrl();
       cy.window()
          .its("opener.postMessage")
-         .should("be.calledWith", stubbedResponse);
+         .should("be.calledWith", { success: true });
    },
    popupShouldNotifyMainWindowOfFailure: () => {
-      const expectedParams = new URLSearchParams({
-         state: "sojhqf2nGunEIxI-MdePeg==",
-         code: "pQbO_7SMV2AAAAAAAAAAL_Tpd0uws8RpRTO2OBQAXwI"
-      });
-
-      const stubbedResponse = { success: false };
-
-      cy.server();
-      cy.route({
-         url: `https://localhost:5000/dropbox/finish?state=*&code=*`,
-         response: stubbedResponse,
-         status: 400
-      }).as("finishOAuthFlow");
-
-      cy.visit("/dropbox-finish?" + expectedParams.toString(), {
-         onBeforeLoad(win) {
-            win.opener = win;
-            cy.stub(win.opener, "postMessage");
-         }
-      });
-
+      stubOauthFinishApiEndpoint({ success: false }, 400);
+      visitOauthRedirectUrl();
       cy.window()
          .its("opener.postMessage")
-         .should("be.calledWith", stubbedResponse);
+         .should("be.calledWith", { success: false });
    },
    mainWindowShouldClosePopup: () => {
       cy.visit("/");
