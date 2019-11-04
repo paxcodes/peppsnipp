@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 
 import styles from "../css/form.module.css";
 import spinner from "../images/spinner.svg";
@@ -14,6 +15,13 @@ class Form extends React.Component {
    loginToPepperplate = e => {
       e.preventDefault();
       this.setState({ startLoginProcess: true });
+      axios
+         .post(`${process.env.API_URL}/pepperplate/session`)
+         .then(response => {})
+         .catch(error => {})
+         .finally(() => {
+            this.setState({ startLoginProcess: false });
+         });
    };
 
    render() {
