@@ -11,15 +11,15 @@ export const stubOpenAuthWindow = win => {
 
 export default {
    linkShouldBeDropboxStart: () => {
-      cy.get("[data-cy=dropbox-oauth]")
+      cy.getTestElement("dropbox-oauth")
          .invoke("attr", "href")
          .then(href => {
             expect(href).to.match(/https\:\/\/.+\/dropbox\/start$/);
          });
    },
    clickingLinkShouldOpenNewWindow: () => {
-      cy.get("[data-cy=dropbox-oauth]").click();
       cy.get("@openAuthWindow").should("be.called");
+      cy.getTestElement("dropbox-oauth").click();
    },
    appShouldPrintErrorMessage: () => {
       cy.visit("/dropbox-finish");
@@ -105,7 +105,7 @@ export default {
    mainWindowShouldClosePopup: () => {
       cy.visit("/");
 
-      cy.get("[data-cy=dropbox-oauth]").click();
+      cy.getTestElement("dropbox-oauth").click();
       cy.get("@openAuthWindow")
          .should("be.called")
          .then(function(spy) {
@@ -118,16 +118,16 @@ export default {
    },
    boxShouldPrintSuccessMessage: () => {
       cy.visit("/");
-      cy.get("[data-cy=dropbox-oauth]").click();
+      cy.getTestElement("dropbox-oauth").click();
       cy.window().trigger("message", { data: { success: true } });
 
-      cy.get("[data-cy=dropbox-oauth]").should("not.be.visible");
-      cy.get("[data-cy=dropbox-oauth-success]").should("be.visible");
+      cy.getTestElement("dropbox-oauth").should("not.be.visible");
+      cy.getTestElement("dropbox-oauth-success").should("be.visible");
    },
    boxShouldPrintErrorMessage: () => {
       cy.fixture("oauth400").then(oauth400Data => {
          cy.visit("/");
-         cy.get("[data-cy=dropbox-oauth]").click();
+         cy.getTestElement("dropbox-oauth").click();
          cy.get("@openAuthWindow")
             .should("be.called")
             .then(function(mock) {
@@ -137,8 +137,8 @@ export default {
          cy.window().trigger("message", oauth400Data);
       });
 
-      cy.get("[data-cy=dropbox-oauth]").should("be.visible");
-      cy.get("[data-cy=dropbox-oauth-success]").should("not.be.visible");
-      cy.get("[data-cy=dropbox-oauth-fail]").should("be.visible");
+      cy.getTestElement("dropbox-oauth").should("be.visible");
+      cy.getTestElement("dropbox-oauth-success").should("not.be.visible");
+      cy.getTestElement("dropbox-oauth-fail").should("be.visible");
    }
 };
