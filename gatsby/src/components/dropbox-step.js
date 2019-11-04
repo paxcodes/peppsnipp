@@ -34,7 +34,7 @@ class DropboxStep extends React.Component {
          <>
             {this.state.dropboxConnected ? (
                <h2
-                  data-cy="dropbox-oauth-success"
+                  data-cy="dropboxOauthSuccess"
                   className="uppercase font-bold mb-4"
                >
                   <p className="px-2 py-4 bg-green-200 mb-8 text-green-900 font-bold text-sm">
@@ -55,7 +55,7 @@ class DropboxStep extends React.Component {
                   <ErrorMessage msg={this.state.errorMessage} />
                   <a
                      href={`${process.env.API_URL}/dropbox/start`}
-                     data-cy="dropbox-oauth"
+                     data-cy="dropboxOauth"
                      className="block"
                      onClick={this.openNewWindow}
                   >
@@ -87,7 +87,7 @@ function ErrorMessage(props) {
 
    return (
       <p
-         data-cy="dropbox-oauth-fail"
+         data-cy="dropboxOauthFail"
          className="px-2 py-4 bg-red-200 mb-8 text-red-900 font-bold text-sm"
       >
          {props.msg}
