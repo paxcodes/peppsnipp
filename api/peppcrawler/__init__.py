@@ -45,8 +45,19 @@ class PepperplateCrawler:
             'ctl00$cphMain$loginForm$tbPassword')
         password_field.send_keys(password)
 
-        self.driver.find_element_by_id('cphMain_loginForm_ibSubmit').click()
+        self.__AcceptCookies()
 
+        self.driver.find_element_by_id(
+            'cphMain_loginForm_ibSubmit').click()
 
         return True
 
+
+    def __AcceptCookies(self):
+        try:
+            element = self.driver.find_element_by_xpath(
+                "//button[@class='sd-cmp-ieaP1']")
+        except NoSuchElementException:
+            pass
+        else:
+            element.click()
