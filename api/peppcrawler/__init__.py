@@ -46,6 +46,17 @@ class PepperplateCrawler:
 
         return True
 
+    def Login(self, email, password):
+        self.visitLoginPage()
+        self.loginToPepperplate(email, password)
+
+    def GetUsersName(self):
+        name = self.driver.find_element_by_id('lblName').text
+        return name
+
+    def GetRecipeTotal(self):
+        recipeTotalString = self.driver.find_element_by_id('reclistcount').text
+        return int(recipeTotalString.split()[0])
 
     def __AcceptCookies(self):
         try:
