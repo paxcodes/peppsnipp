@@ -47,7 +47,6 @@ class PepperplateCrawler:
 
         self.driver.find_element_by_id('cphMain_loginForm_ibSubmit').click()
 
-        recipe_total = self.driver.find_element_by_id('reclistcount').text
 
-        return recipe_total
+        return True
 
