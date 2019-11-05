@@ -37,14 +37,7 @@ class PepperplateCrawler:
         }
 
     def loginToPepperplate(self, email, password):
-        email_field = self.driver.find_element_by_name(
-            'ctl00$cphMain$loginForm$tbEmail')
-        email_field.send_keys(email)
-
-        password_field = self.driver.find_element_by_name(
-            'ctl00$cphMain$loginForm$tbPassword')
-        password_field.send_keys(password)
-
+        self.__TypeCredentials(email, password)
         self.__AcceptCookies()
 
         self.driver.find_element_by_id(
@@ -61,3 +54,12 @@ class PepperplateCrawler:
             pass
         else:
             element.click()
+
+    def __TypeCredentials(self, email, password):
+        email_field = self.driver.find_element_by_name(
+            'ctl00$cphMain$loginForm$tbEmail')
+        email_field.send_keys(email)
+
+        password_field = self.driver.find_element_by_name(
+            'ctl00$cphMain$loginForm$tbPassword')
+        password_field.send_keys(password)
