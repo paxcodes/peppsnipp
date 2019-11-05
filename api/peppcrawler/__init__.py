@@ -2,6 +2,7 @@ import os
 
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
+from selenium.common.exceptions import NoSuchElementException
 from dotenv import load_dotenv
 
 
