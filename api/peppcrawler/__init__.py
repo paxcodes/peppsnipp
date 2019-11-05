@@ -19,6 +19,7 @@ class PepperplateCrawler:
         dir_path = os.path.dirname(os.path.realpath(__file__))
         self.driver = webdriver.Firefox(
             options=options, executable_path=dir_path + '/geckodriver/' + os.getenv("OS"))
+        self.driver.set_window_size(1080, 800)
         self.driver.implicitly_wait(10)
         print('Browser: Started!')
 
