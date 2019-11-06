@@ -69,8 +69,8 @@ class PepperplateCrawler:
 
     def __AcceptCookies(self):
         try:
-            element = self.driver.find_element_by_xpath(
-                "//button[@class='sd-cmp-ieaP1']")
+            element=self.driver.find_element_by_css_selector(
+                'button.sd-cmp-ieaP1')
         except NoSuchElementException:
             pass
         else:
