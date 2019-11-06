@@ -1,27 +1,34 @@
 import os
 
 from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from dotenv import load_dotenv
+
+driverPath = os.path.dirname(
+    os.path.realpath(__file__)) + '/driver'
 
 
 class PepperplateCrawler:
     loginURL = "https://www.pepperplate.com/login.aspx"
+    chromeDriverPath = driverPath + '/ChromeDriver'
+    browserAppPath = driverPath + '/Brave Browser.app/Contents/MacOS/Brave Browser'
 
     def __init__(self):
         load_dotenv()
         self.startDriver()
 
     def startDriver(self):
-        options = Options()
-        options.headless = True
+        options = webdriver.ChromeOptions()
+        options.binary_location = self.browserAppPath
+        options.add_argument("--headless")
+
         print('Browser: Starting...')
-        dir_path = os.path.dirname(os.path.realpath(__file__))
-        self.driver = webdriver.Firefox(
-            options=options, executable_path=dir_path + '/geckodriver/' + os.getenv("OS"))
+        self.driver = webdriver.Chrome(
+            chrome_options=options, executable_path=self.chromeDriverPath)
         self.driver.set_window_size(1080, 800)
-        self.driver.implicitly_wait(10)
         print('Browser: Started!')
 
     def quitDriver(self):
@@ -55,7 +62,9 @@ class PepperplateCrawler:
         return name
 
     def GetRecipeTotal(self):
-        recipeTotalString = self.driver.find_element_by_id('reclistcount').text
+        recipeTotalElem = WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_element_located((By.ID, 'reclistcount')))
+        recipeTotalString = recipeTotalElem.text
         return int(recipeTotalString.split()[0])
 
     def __AcceptCookies(self):
