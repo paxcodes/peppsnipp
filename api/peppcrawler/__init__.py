@@ -67,9 +67,16 @@ class PepperplateCrawler:
         recipeTotalString = recipeTotalElem.text
         return int(recipeTotalString.split()[0])
 
+    def SnipRecipes(self):
+        recipeLinks = self.driver.find_elements_by_css_selector(
+            '.item > p > a')
+
+        for link in recipeLinks:
+            link.click()
+
     def __AcceptCookies(self):
         try:
-            element=self.driver.find_element_by_css_selector(
+            element = self.driver.find_element_by_css_selector(
                 'button.sd-cmp-ieaP1')
         except NoSuchElementException:
             pass
