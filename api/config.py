@@ -12,8 +12,9 @@ class Config:
     TESTING = getenv('TESTING', False)
     DEBUG = getenv('DEBUG')
 
+    REDIS_URL = getenv('REDIS_URL')
     SESSION_TYPE = getenv('SESSION_TYPE')
-  SESSION_REDIS = redis.from_url(getenv('REDIS_URL'))
+    SESSION_REDIS = redis.from_url(REDIS_URL)
 
     DROPBOX_APP_KEY = getenv('DROPBOX_APP_KEY')
     DROPBOX_APP_SECRET = getenv('DROPBOX_APP_SECRET')
