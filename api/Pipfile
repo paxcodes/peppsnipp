@@ -37,6 +37,7 @@ redis = "*"
 pyopenssl = "*"
 dropbox = "*"
 gunicorn = "*"
+flask-cors = "*"
 selenium = "*"
 celery = "*"
 
