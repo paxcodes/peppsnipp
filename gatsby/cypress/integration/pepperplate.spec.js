@@ -13,15 +13,17 @@ describe("The Pepperplate Step", () => {
    );
 
    context("When api request to login to Pepperplate has completed", () => {
-   it(
-      "displays an error message when one of the fields are missing",
+      it(
+         "displays an error message when one of the fields are missing",
+         tests.missingFieldShouldDisplayErrorMessage
+      );
+
+      it(
          "removes spinner and enables the submit button",
          tests.formShouldReset
       );
    });
 
-      tests.missingFieldShouldDisplayErrorMessage
-   );
    it(
       "displays an error message when credentials are incorrect",
       tests.incorrectCredentialsShouldDisplayAnErrorMessage
