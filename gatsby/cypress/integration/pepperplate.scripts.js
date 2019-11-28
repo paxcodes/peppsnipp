@@ -24,15 +24,13 @@ export default {
       cy.route("POST", "https://localhost:5000/pepperplate/session").as(
          "loginToPepperplate"
       );
-      cy.fixture("peppSession200").as("peppLoginResponse");
 
       cy.visit("/");
       cy.getTestElement("emailField").type(Cypress.env("peppEmail"));
       cy.getTestElement("passwordField").type(Cypress.env("peppPassword"));
       cy.getTestElement("submitBtn").click();
       cy.wait("@loginToPepperplate").then(xhr => {
-         console.log(xhr);
-         console.log(this.peppLoginResponse);
+         expect(xhr.status).to.be.equal(200);
       });
    }
 };
