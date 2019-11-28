@@ -31,6 +31,9 @@ describe("The Pepperplate Step", () => {
 });
 
 context("When login is successful", () => {
-   it("notifies user when login is successful");
+   it.only(
+      "notifies user when login is successful",
+      tests.shouldNotifyUserThatLoginIsSuccessful
+   );
    it("removes the login form and describes the next process");
 });

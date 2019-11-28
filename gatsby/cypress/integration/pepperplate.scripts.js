@@ -19,4 +19,18 @@ export default {
       cy.getTestElement("loadingAnimation").should("not.be.visible");
       cy.getTestElement("submitBtn").should("be.enabled");
    },
+   shouldNotifyUserThatLoginIsSuccessful: () => {
+      cy.server();
+      cy.route("POST", "https://localhost:5000/pepperplate/session").as(
+         "loginToPepperplate"
+      );
+
+      cy.visit("/");
+      cy.getTestElement("emailField").type(Cypress.env("peppEmail"));
+      cy.getTestElement("passwordField").type(Cypress.env("peppPassword"));
+      cy.getTestElement("submitBtn").click();
+      cy.wait("@loginToPepperplate").then(xhr => {
+         expect(xhr.status).to.be.equal(200);
+      });
+   }
 };

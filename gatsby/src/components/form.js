@@ -8,6 +8,8 @@ class Form extends React.Component {
    constructor(props) {
       super(props);
       this.state = {
+         email: "",
+         password: "",
          startLoginProcess: false
       };
    }
@@ -16,7 +18,10 @@ class Form extends React.Component {
       e.preventDefault();
       this.setState({ startLoginProcess: true });
       axios
-         .post(`${process.env.API_URL}/pepperplate/session`)
+         .post(`${process.env.API_URL}/pepperplate/session`, {
+            email: this.state.email,
+            password: this.state.password
+         })
          .then(response => {})
          .catch(error => {})
          .finally(() => {
@@ -24,26 +29,41 @@ class Form extends React.Component {
          });
    };
 
+   handleChange = event => {
+      const target = event.target;
+      const value = target.value;
+      const name = target.name;
+      this.setState({
+         [name]: value
+      });
+   };
+
    render() {
       return (
          <form className={styles.form}>
-            <label id="username" className="text-gray-700">
-               Username
+            <label id="email" className="text-gray-700">
+               Email
             </label>
             <input
-               data-cy="usernameField"
-               aria-labelledby="username"
+               data-cy="emailField"
+               name="email"
+               aria-labelledby="email"
                type="text"
                className="shadow border rounded py-2 px-3 leading-tight focus:outline-none focus:shadow-inner"
+               value={this.state.email}
+               onChange={this.handleChange}
             />
             <label id="password" className="text-gray-700">
                Password
             </label>
             <input
                data-cy="passwordField"
+               name="password"
                aria-labelledby="password"
                type="password"
                className="shadow border rounded py-2 px-3 leading-tight focus:outline-none focus:shadow-inner"
+               value={this.state.password}
+               onChange={this.handleChange}
             />
             <div className={`${styles.buttonContainer} relative`}>
                <button

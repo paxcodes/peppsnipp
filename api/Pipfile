@@ -37,7 +37,9 @@ redis = "*"
 pyopenssl = "*"
 dropbox = "*"
 gunicorn = "*"
+flask-cors = "*"
 selenium = "*"
+celery = "*"
 
 [requires]
 python_version = "3.7"
