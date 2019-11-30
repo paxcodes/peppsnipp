@@ -1,3 +1,0 @@
-api=https://github.com/heroku/heroku-buildpack-python.git
-gatsby=https://github.com/heroku/heroku-buildpack-nodejs.git
-gatsby=https://github.com/heroku/heroku-buildpack-static.git
