@@ -2,6 +2,8 @@ import os
 
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import ElementClickInterceptedException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -72,10 +74,10 @@ class PepperplateCrawler:
             try:
                 loadMore = WebDriverWait(self.driver, 10).until(
                     EC.visibility_of_element_located((By.ID, 'loadmorelink')))
-            except NoSuchElementException:
+            except (NoSuchElementException, TimeoutException) as e:
                 break
             else:
-                loadMore.click()
+                self.driver.execute_script("arguments[0].click();", loadMore)
 
         recipeLinks = []
 
