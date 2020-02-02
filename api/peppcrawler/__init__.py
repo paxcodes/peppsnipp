@@ -70,15 +70,7 @@ class PepperplateCrawler:
         return int(recipeTotalString.split()[0])
 
     def FetchRecipeLinks(self):
-        while True:
-            try:
-                loadMore = WebDriverWait(self.driver, 10).until(
-                    EC.visibility_of_element_located((By.ID, 'loadmorelink')))
-            except (NoSuchElementException, TimeoutException) as e:
-                break
-            else:
-                self.driver.execute_script("arguments[0].click();", loadMore)
-
+        self.__LoadAllRecipes()
         recipeLinks = []
 
         anchorTags = self.driver.find_elements_by_css_selector(
@@ -90,6 +82,16 @@ class PepperplateCrawler:
             print(f"{i}: {anchorTag.LinkText}  {link}")
 
         return recipeLinks
+
+    def __LoadAllRecipes(self):
+        while True:
+            try:
+                loadMore = WebDriverWait(self.driver, 10).until(
+                    EC.visibility_of_element_located((By.ID, 'loadmorelink')))
+            except (NoSuchElementException, TimeoutException):
+                break
+            else:
+                self.driver.execute_script("arguments[0].click();", loadMore)
 
     def __AcceptCookies(self):
         try:
