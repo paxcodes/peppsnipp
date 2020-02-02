@@ -23,7 +23,7 @@ class PepperplateCrawler:
     def startDriver(self):
         options = webdriver.ChromeOptions()
         options.binary_location = self.browserAppPath
-        options.add_argument("--headless")
+        # options.add_argument("--headless")
 
         print('Browser: Starting...')
         self.driver = webdriver.Chrome(
@@ -67,12 +67,27 @@ class PepperplateCrawler:
         recipeTotalString = recipeTotalElem.text
         return int(recipeTotalString.split()[0])
 
-    def SnipRecipes(self):
-        recipeLinks = self.driver.find_elements_by_css_selector(
+    def FetchRecipeLinks(self):
+        while True:
+            try:
+                loadMore = WebDriverWait(self.driver, 10).until(
+                    EC.visibility_of_element_located((By.ID, 'loadmorelink')))
+            except NoSuchElementException:
+                break
+            else:
+                loadMore.click()
+
+        recipeLinks = []
+
+        anchorTags = self.driver.find_elements_by_css_selector(
             '.item > p > a')
 
-        for link in recipeLinks:
-            link.click()
+        for i, anchorTag in enumerate(anchorTags, start=1):
+            link = anchorTag.getAttribute("href")
+            recipeLinks.append(link)
+            print(f"{i}: {anchorTag.LinkText}  {link}")
+
+        return recipeLinks
 
     def __AcceptCookies(self):
         try:
