@@ -78,7 +78,7 @@ class PepperplateCrawler:
         for i, anchorTag in enumerate(anchorTags, start=1):
             link = anchorTag.getAttribute("href")
             recipeLinks.append(link)
-            print(f"{i}: {anchorTag.LinkText}  {link}")
+            print(f"{i}: {anchorTag.text} {link}")
 
         return recipeLinks
 
