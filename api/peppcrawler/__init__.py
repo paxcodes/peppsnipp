@@ -16,7 +16,6 @@ driverPath = os.path.dirname(
 class PepperplateCrawler:
     loginURL = "https://www.pepperplate.com/login.aspx"
     chromeDriverPath = driverPath + '/ChromeDriver'
-    browserAppPath = driverPath + '/Brave Browser.app/Contents/MacOS/Brave Browser'
 
     def __init__(self):
         load_dotenv()
@@ -24,7 +23,6 @@ class PepperplateCrawler:
 
     def startDriver(self):
         options = webdriver.ChromeOptions()
-        options.binary_location = self.browserAppPath
         # options.add_argument("--headless")
 
         print('Browser: Starting...')
