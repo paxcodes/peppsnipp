@@ -1,4 +1,5 @@
 import os
+import time
 
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
@@ -91,6 +92,7 @@ class PepperplateCrawler:
                 break
             else:
                 self.driver.execute_script("arguments[0].click();", loadMore)
+                time.sleep(2)
 
     def __AcceptCookies(self):
         try:
