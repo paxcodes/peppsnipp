@@ -17,6 +17,5 @@ crawler.Login(kPepperplateEmail, kPepperplatePw)
 recipeLinks = crawler.FetchRecipeLinks()
 saveRecipeLinks(recipeLinks)
 
-# crawler.SnipRecipes()
 # @todo Use "with" so crawler is automatically quit?
 crawler.quitDriver()
