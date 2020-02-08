@@ -85,7 +85,7 @@ class PeppRecipeScraper:
     def __GetGroupLabel(self, groupElement):
         try:
             labelElement = groupElement.find_element_by_xpath(
-                "preceding::h4")
+                "preceding-sibling::h4")
         except NoSuchElementException:
             return ""
         else:
