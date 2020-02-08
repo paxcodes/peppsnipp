@@ -61,7 +61,7 @@ class PeppRecipeScraper:
         pass
 
     def Notes(self):
-        pass
+        return self.__GetTextElementById("cphMiddle_cphMain_lblNotes")
 
     def Image(self):
         try:
