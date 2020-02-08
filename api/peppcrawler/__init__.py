@@ -12,6 +12,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from dotenv import load_dotenv
 
 from peppcrawler.PeppRecipeScraper import PeppRecipeScraper
+from utils import saveRecipe
 
 driverPath = os.path.dirname(
     os.path.realpath(__file__)) + '/driver'
@@ -87,6 +88,17 @@ class PepperplateCrawler:
             print(f"{i}: {anchorTag.text} {link}")
 
         return recipeLinks
+
+    def ProcessRecipeLinks(self, recipeLinks):
+        pass
+
+    def SnipRecipePages(self, recipeLinks):
+        pass
+
+    def JsonifyRecipePages(self, recipeLinks):
+        for recipeLink in recipeLinks:
+            recipe = self.ScrapeRecipePage(recipeLink)
+            saveRecipe(recipe)
 
     def ScrapeRecipePage(self, recipeLink):
         self.driver.get(recipeLink)
