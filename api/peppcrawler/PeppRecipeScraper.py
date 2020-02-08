@@ -23,31 +23,13 @@ class PeppRecipeScraper:
             }
 
     def Description(self):
-        try:
-            sourceElement = self.driver.find_element_by_id(
-                "cphMiddle_cphMain_lblDescription")
-        except NoSuchElementException:
-            return ""
-        else:
-            return sourceElement.text
+        return self.__GetTextElementById("cphMiddle_cphMain_lblDescription")
 
     def Yield(self):
-        try:
-            sourceElement = self.driver.find_element_by_id(
-                "cphMiddle_cphMain_lblYield")
-        except NoSuchElementException:
-            return ""
-        else:
-            return sourceElement.text
+        return self.__GetTextElementById("cphMiddle_cphMain_lblYield")
 
     def ActiveTime(self):
-        try:
-            sourceElement = self.driver.find_element_by_id(
-                "cphMiddle_cphMain_lblActiveTime")
-        except NoSuchElementException:
-            return ""
-        else:
-            return sourceElement.text
+        return self.__GetTextElementById("cphMiddle_cphMain_lblActiveTime")
 
     def TotalTime(self):
         pass
@@ -67,5 +49,10 @@ class PeppRecipeScraper:
     def Image(self):
         pass
 
-    def __GetElementById(self):
-        pass
+    def __GetTextElementById(self, id):
+        try:
+            textElement = self.driver.find_element_by_id(id)
+        except NoSuchElementException:
+            return ""
+        else:
+            return textElement.text
