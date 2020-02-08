@@ -75,3 +75,8 @@ def test_scrapeNotes(scraper):
 def test_scrapeIngredients(scraper):
     actualIngredients = scraper.Ingredients()
     assert expectedRecipe["ingredients"] == actualIngredients
+
+
+def test_scrapeInstructions(scraper):
+    actualInstructions = scraper.Instructions()
+    assert expectedRecipe["instructions"] == actualInstructions
