@@ -15,6 +15,7 @@ from dotenv import load_dotenv
 from peppcrawler.PeppRecipeScraper import PeppRecipeScraper
 from utils import saveRecipeAsJson
 from utils import generateFileName
+from utils import pepperplateDir
 from definitions import PYTHON_APP_DIR
 
 driverPath = os.path.dirname(
@@ -121,8 +122,8 @@ class PepperplateCrawler:
             print(f"{i}: Exported {title}")
 
     def __GetFullScreenshot(self, fileName):
-        path = os.path.join(
-            PYTHON_APP_DIR, "output", "p", f"{fileName}.png")
+        path = os.path.join(os.path.expanduser(
+            pepperplateDir), "p", f"{fileName}.png")
         requiredWidth = self.driver.execute_script(
             'return document.body.parentNode.scrollWidth')
         requiredHeight = self.driver.execute_script(

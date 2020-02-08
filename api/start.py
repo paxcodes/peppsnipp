@@ -3,7 +3,9 @@ from os import getenv
 from peppcrawler import PepperplateCrawler
 from utils import askFormat
 from utils import getRecipeLinks
+from utils import createDirectories
 
+createDirectories()
 format = askFormat()
 crawler = PepperplateCrawler()
 crawler.visitLoginPage()

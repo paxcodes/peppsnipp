@@ -1,10 +1,12 @@
 from os import path
+from os import mkdir
 
 import json
 import unicodedata
 import re
 
 pathToRecipeLinks = "output/_recipeLinks.json"
+pepperplateDir = "~/Pepperplate"
 
 
 def slugify(value):
@@ -38,13 +40,28 @@ def generateFileName(title):
 
 
 def saveRecipeAsJson(recipe, fileName):
-    with open(path.join("output", "j", f"{fileName}.json"), "a") as f:
+    with open(path.join(path.expanduser(pepperplateDir), "j", f"{fileName}.json"), "a") as f:
         json.dump(recipe, f, indent=3)
 
 
 def saveRecipeLinks(links):
     with open(pathToRecipeLinks, "a") as f:
         json.dump(links, f, indent=3)
+
+
+def createDirectories():
+    print("Creating folders in ~/Pepperplate...")
+    createDirectory(['~', "Pepperplate"])
+    createDirectory(['~', "Pepperplate", "j"])
+    createDirectory(['~', "Pepperplate", "p"])
+
+
+def createDirectory(pathPieces):
+    try:
+        mkdir(path.expanduser('/'.join(pathPieces)))
+        print(f"Directory {'/'.join(pathPieces)} created!")
+    except FileExistsError:
+        print(f"Directory {'/'.join(pathPieces)} already exists!")
 
 
 def getRecipeLinks(crawler):
