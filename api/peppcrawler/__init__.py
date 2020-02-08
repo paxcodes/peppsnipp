@@ -94,28 +94,18 @@ class PepperplateCrawler:
         return recipeLinks
 
     def ProcessRecipeLinks(self, recipeLinks, format):
-        if "j" == format:
-            self.JsonifyRecipePages(recipeLinks)
-        elif "p" == format:
-            self.SnipRecipePages(recipeLinks)
-        elif "b" == format:
-            for i, recipeLink in enumerate(recipeLinks):
-                self.driver.get(recipeLink)
-                title = re.sub(r'^Pepperplate - ', '', self.driver.title)
-                self.__SnipRecipePage(title)
-                self.ScrapeRecipePage()
-                print(f"{i}: Exported {title}")
-
-    def SnipRecipePages(self, recipeLinks):
-        for i, recipeLink in enumerate(recipeLinks):
+        for i, recipeLink in enumerate(recipeLinks, start=1):
             self.driver.get(recipeLink)
             title = re.sub(r'^Pepperplate - ', '', self.driver.title)
-            self.__SnipRecipePage(title)
-            print(f"{i}: Snipped {title}")
+            fileName = generateFileName(title)
+            if format in 'jb':
+                recipe = self.ScrapeRecipePage()
+                saveRecipeAsJson(recipe, fileName)
 
-    def __SnipRecipePage(self, title):
-        fileName = generateFileName(title, "p")
-        self.__GetFullScreenshot(fileName)
+            if format in 'pb':
+                self.__GetFullScreenshot(fileName)
+
+            print(f"{i}: Exported {title}")
 
     def __GetFullScreenshot(self, fileName):
         path = os.path.join(
@@ -127,13 +117,10 @@ class PepperplateCrawler:
         self.driver.set_window_size(requiredWidth, requiredHeight)
         self.driver.find_element_by_class_name('recipedet').screenshot(path)
 
-    def JsonifyRecipePages(self, recipeLinks):
-        for i, recipeLink in enumerate(recipeLinks):
+    def ScrapeRecipePage(self, recipeLink=""):
+        if recipeLink != "":
             self.driver.get(recipeLink)
-            recipe = self.ScrapeRecipePage()
-            print(f"{i}: Snipped {recipe['title']}")
 
-    def ScrapeRecipePage(self):
         recipe = OrderedDict()
 
         recipe["title"] = self.recipeScraper.Title()
@@ -148,7 +135,6 @@ class PepperplateCrawler:
         recipe["notes"] = self.recipeScraper.Notes()
         recipe["image"] = self.recipeScraper.Image()
 
-        saveRecipeAsJson(recipe)
         return recipe
 
     def __LoadAllRecipes(self):

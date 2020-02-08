@@ -24,7 +24,7 @@ prevSlug = ""
 suffix = 2
 
 
-def generateFileName(title, format):
+def generateFileName(title):
     global prevSlug, suffix
     fileName = slugify(title)
     if fileName == prevSlug:
@@ -37,8 +37,7 @@ def generateFileName(title, format):
     return fileName
 
 
-def saveRecipeAsJson(recipe):
-    fileName = generateFileName(recipe["title"], "j")
+def saveRecipeAsJson(recipe, fileName):
     with open(path.join("output", "j", f"{fileName}.json"), "a") as f:
         json.dump(recipe, f, indent=3)
 
