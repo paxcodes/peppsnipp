@@ -98,16 +98,23 @@ class PepperplateCrawler:
         elif "p" == format:
             self.SnipRecipePages(recipeLinks)
         elif "b" == format:
-            self.JsonifyRecipePages(recipeLinks)
-            self.SnipRecipePages(recipeLinks)
+            for i, recipeLink in enumerate(recipeLinks):
+                self.driver.get(recipeLink)
+                title = re.sub(r'^Pepperplate - ', '', self.driver.title)
+                self.__SnipRecipePage(title)
+                self.JsonifyRecipePages(recipeLinks)
+                print(f"{i}: Exported {title}")
 
     def SnipRecipePages(self, recipeLinks):
         for i, recipeLink in enumerate(recipeLinks):
             self.driver.get(recipeLink)
             title = re.sub(r'^Pepperplate - ', '', self.driver.title)
-            fileName = generateFileName(title, "p")
-            self.__GetFullScreenshot(fileName)
-            print(f"{i}: Snipped {self.driver.title}")
+            self.__SnipRecipePage(title)
+            print(f"{i}: Snipped {title}")
+
+    def __SnipRecipePage(self, title):
+        fileName = generateFileName(title, "p")
+        self.__GetFullScreenshot(fileName)
 
     def __GetFullScreenshot(self, fileName):
         path = os.path.join(
