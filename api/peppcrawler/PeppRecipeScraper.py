@@ -1,3 +1,5 @@
+import re
+
 from selenium.common.exceptions import NoSuchElementException
 
 
@@ -47,7 +49,15 @@ class PeppRecipeScraper:
         pass
 
     def Image(self):
-        pass
+        try:
+            element = self.driver.find_element_by_id(
+                "cphMiddle_cphMain_imgRecipeThumb")
+        except NoSuchElementException:
+            return ""
+        else:
+            src = element.get_attribute("src")
+            src = re.sub(r'\?preset=sitethumb$', '', src)
+            return src
 
     def __GetTextElementById(self, id):
         try:
