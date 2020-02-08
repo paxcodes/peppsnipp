@@ -88,6 +88,24 @@ class PepperplateCrawler:
 
         return recipeLinks
 
+    def ScrapeRecipePage(self, recipeLink):
+        self.driver.get(recipeLink)
+        recipe = OrderedDict()
+
+        recipe["title"] = self.recipeScraper.Title()
+        recipe["source"] = self.recipeScraper.Source()
+        recipe["description"] = self.recipeScraper.Description()
+        recipe["yield"] = self.recipeScraper.Yield()
+        recipe["active_time"] = self.recipeScraper.ActiveTime()
+        recipe["total_time"] = self.recipeScraper.TotalTime()
+        recipe["categories"] = self.recipeScraper.Categories()
+        recipe["ingredients"] = self.recipeScraper.Ingredients()
+        recipe["instructions"] = self.recipeScraper.Instructions()
+        recipe["notes"] = self.recipeScraper.Notes()
+        recipe["image"] = self.recipeScraper.Image()
+
+        return recipe
+
     def __LoadAllRecipes(self):
         while True:
             try:
