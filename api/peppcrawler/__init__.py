@@ -1,5 +1,6 @@
 import os
 import time
+from collections import OrderedDict
 
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
@@ -9,6 +10,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from dotenv import load_dotenv
+
+from peppcrawler.PeppRecipeScraper import PeppRecipeScraper
 
 driverPath = os.path.dirname(
     os.path.realpath(__file__)) + '/driver'
@@ -20,17 +23,19 @@ class PepperplateCrawler:
 
     def __init__(self):
         load_dotenv()
-        self.startDriver()
+        self.driver = self.startDriver()
+        self.recipeScraper = PeppRecipeScraper(self.driver)
 
     def startDriver(self):
         options = webdriver.ChromeOptions()
         # options.add_argument("--headless")
 
         print('Browser: Starting...')
-        self.driver = webdriver.Chrome(
+        driver = webdriver.Chrome(
             chrome_options=options, executable_path=self.chromeDriverPath)
-        self.driver.set_window_size(1080, 800)
+        driver.set_window_size(1080, 800)
         print('Browser: Started!')
+        return driver
 
     def quitDriver(self):
         print('Browser: Quitting...')
@@ -82,6 +87,24 @@ class PepperplateCrawler:
             print(f"{i}: {anchorTag.text} {link}")
 
         return recipeLinks
+
+    def ScrapeRecipePage(self, recipeLink):
+        self.driver.get(recipeLink)
+        recipe = OrderedDict()
+
+        recipe["title"] = self.recipeScraper.Title()
+        recipe["source"] = self.recipeScraper.Source()
+        recipe["description"] = self.recipeScraper.Description()
+        recipe["yield"] = self.recipeScraper.Yield()
+        recipe["active_time"] = self.recipeScraper.ActiveTime()
+        recipe["total_time"] = self.recipeScraper.TotalTime()
+        recipe["categories"] = self.recipeScraper.Categories()
+        recipe["ingredients"] = self.recipeScraper.Ingredients()
+        recipe["instructions"] = self.recipeScraper.Instructions()
+        recipe["notes"] = self.recipeScraper.Notes()
+        recipe["image"] = self.recipeScraper.Image()
+
+        return recipe
 
     def __LoadAllRecipes(self):
         while True:
