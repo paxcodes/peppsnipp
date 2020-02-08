@@ -1,5 +1,6 @@
 import os
 import time
+import re
 from collections import OrderedDict
 
 from selenium import webdriver
@@ -12,7 +13,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from dotenv import load_dotenv
 
 from peppcrawler.PeppRecipeScraper import PeppRecipeScraper
-from utils import saveRecipe
+from utils import saveRecipeAsJson
+from utils import generateFileName
+from definitions import PYTHON_APP_DIR
 
 driverPath = os.path.dirname(
     os.path.realpath(__file__)) + '/driver'
@@ -29,7 +32,7 @@ class PepperplateCrawler:
 
     def startDriver(self):
         options = webdriver.ChromeOptions()
-        # options.add_argument("--headless")
+        options.add_argument("--headless")
 
         print('Browser: Starting...')
         driver = webdriver.Chrome(
@@ -75,6 +78,7 @@ class PepperplateCrawler:
         return int(recipeTotalString.split()[0])
 
     def FetchRecipeLinks(self):
+        print(f"Fetching recipe links...")
         self.driver.find_element_by_id("cphMiddle_lbSortAlpha").click()
         self.__LoadAllRecipes()
         recipeLinks = []
@@ -89,19 +93,34 @@ class PepperplateCrawler:
 
         return recipeLinks
 
-    def ProcessRecipeLinks(self, recipeLinks):
-        pass
+    def ProcessRecipeLinks(self, recipeLinks, format):
+        for i, recipeLink in enumerate(recipeLinks, start=1):
+            self.driver.get(recipeLink)
+            title = re.sub(r'^Pepperplate - ', '', self.driver.title)
+            fileName = generateFileName(title)
+            if format in 'jb':
+                recipe = self.ScrapeRecipePage()
+                saveRecipeAsJson(recipe, fileName)
 
-    def SnipRecipePages(self, recipeLinks):
-        pass
+            if format in 'pb':
+                self.__GetFullScreenshot(fileName)
 
-    def JsonifyRecipePages(self, recipeLinks):
-        for recipeLink in recipeLinks:
-            recipe = self.ScrapeRecipePage(recipeLink)
-            saveRecipe(recipe)
+            print(f"{i}: Exported {title}")
 
-    def ScrapeRecipePage(self, recipeLink):
-        self.driver.get(recipeLink)
+    def __GetFullScreenshot(self, fileName):
+        path = os.path.join(
+            PYTHON_APP_DIR, "output", "p", f"{fileName}.png")
+        requiredWidth = self.driver.execute_script(
+            'return document.body.parentNode.scrollWidth')
+        requiredHeight = self.driver.execute_script(
+            'return document.body.parentNode.scrollHeight')
+        self.driver.set_window_size(requiredWidth, requiredHeight)
+        self.driver.find_element_by_class_name('recipedet').screenshot(path)
+
+    def ScrapeRecipePage(self, recipeLink=""):
+        if recipeLink != "":
+            self.driver.get(recipeLink)
+
         recipe = OrderedDict()
 
         recipe["title"] = self.recipeScraper.Title()

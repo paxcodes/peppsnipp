@@ -20,20 +20,25 @@ def slugify(value):
     return re.sub(r'[-\s]+', '', value.title())
 
 
-def generateFileName(title, format):
+prevSlug = ""
+suffix = 2
+
+
+def generateFileName(title):
+    global prevSlug, suffix
     fileName = slugify(title)
-    suffix = 2
-    while True:
-        if not path.exists(path.join("output", format, f"{fileName}.json")):
-            return fileName
-        else:
-            fileName = f"{fileName}{suffix}"
-            suffix += 1
+    if fileName == prevSlug:
+        fileName = f"{fileName}{suffix}"
+        suffix += 1
+    else:
+        prevSlug = fileName
+        suffix = 2
+
+    return fileName
 
 
-def saveRecipe(recipe, format=""):
-    fileName = generateFileName(recipe["title"], format)
-    with open(path.join("output", format, f"{fileName}.json"), "a") as f:
+def saveRecipeAsJson(recipe, fileName):
+    with open(path.join("output", "j", f"{fileName}.json"), "a") as f:
         json.dump(recipe, f, indent=3)
 
 
@@ -54,7 +59,8 @@ def getRecipeLinks(crawler):
 
 def askFormat():
     while True:
-        format = input("What format would you like: [j]son [p]df [b]oth\n>> ")
+        format = input(
+            "What format would you like:\n[j]son\n[p]ng screenshots\n[b]oth\n>> ")
         format = format.strip()
         if format in "jbp":
             return format
