@@ -102,7 +102,7 @@ class PepperplateCrawler:
                 self.driver.get(recipeLink)
                 title = re.sub(r'^Pepperplate - ', '', self.driver.title)
                 self.__SnipRecipePage(title)
-                self.JsonifyRecipePages(recipeLinks)
+                self.ScrapeRecipePage()
                 print(f"{i}: Exported {title}")
 
     def SnipRecipePages(self, recipeLinks):
@@ -128,12 +128,11 @@ class PepperplateCrawler:
 
     def JsonifyRecipePages(self, recipeLinks):
         for i, recipeLink in enumerate(recipeLinks):
-            recipe = self.ScrapeRecipePage(recipeLink)
-            saveRecipeAsJson(recipe)
+            self.driver.get(recipeLink)
+            recipe = self.ScrapeRecipePage()
             print(f"{i}: Snipped {recipe['title']}")
 
-    def ScrapeRecipePage(self, recipeLink):
-        self.driver.get(recipeLink)
+    def ScrapeRecipePage(self):
         recipe = OrderedDict()
 
         recipe["title"] = self.recipeScraper.Title()
@@ -148,6 +147,7 @@ class PepperplateCrawler:
         recipe["notes"] = self.recipeScraper.Notes()
         recipe["image"] = self.recipeScraper.Image()
 
+        saveRecipeAsJson(recipe)
         return recipe
 
     def __LoadAllRecipes(self):
