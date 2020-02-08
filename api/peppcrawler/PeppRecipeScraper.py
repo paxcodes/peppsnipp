@@ -1,22 +1,53 @@
+from selenium.common.exceptions import NoSuchElementException
+
+
 class PeppRecipeScraper:
 
     def __init__(self, driver):
         self.driver = driver
 
     def Title(self):
-        pass
+        return self.driver.find_element_by_id(
+            'cphMiddle_cphMain_lblTitle').text
 
     def Source(self):
-        pass
+        try:
+            sourceElement = self.driver.find_element_by_id(
+                'cphMiddle_cphMain_hlSource')
+        except NoSuchElementException:
+            return ""
+        else:
+            return {
+                "text": sourceElement.text,
+                "url": sourceElement.get_attribute("href")
+            }
 
     def Description(self):
-        pass
+        try:
+            sourceElement = self.driver.find_element_by_id(
+                "cphMiddle_cphMain_lblDescription")
+        except NoSuchElementException:
+            return ""
+        else:
+            return sourceElement.text
 
     def Yield(self):
-        pass
+        try:
+            sourceElement = self.driver.find_element_by_id(
+                "cphMiddle_cphMain_lblYield")
+        except NoSuchElementException:
+            return ""
+        else:
+            return sourceElement.text
 
     def ActiveTime(self):
-        pass
+        try:
+            sourceElement = self.driver.find_element_by_id(
+                "cphMiddle_cphMain_lblActiveTime")
+        except NoSuchElementException:
+            return ""
+        else:
+            return sourceElement.text
 
     def TotalTime(self):
         pass
@@ -34,4 +65,7 @@ class PeppRecipeScraper:
         pass
 
     def Image(self):
+        pass
+
+    def __GetElementById(self):
         pass
