@@ -50,3 +50,13 @@ def test_scrapeYield(scraper):
 def test_scrapeActiveTime(scraper):
     actualActiveTime = scraper.ActiveTime()
     assert expectedRecipe["active_time"] == actualActiveTime
+
+
+def test_scrapeTotalTime(scraper):
+    actualTotalTime = scraper.TotalTime()
+    assert expectedRecipe["total_time"] == actualTotalTime
+
+
+def test_scrapeCategories(scraper):
+    actualCategories = scraper.Categories()
+    assert expectedRecipe["categories"] == actualCategories

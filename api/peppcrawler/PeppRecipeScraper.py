@@ -32,10 +32,10 @@ class PeppRecipeScraper:
         return self.__GetTextElementById("cphMiddle_cphMain_lblActiveTime")
 
     def TotalTime(self):
-        pass
+        return self.__GetTextElementById("cphMiddle_cphMain_lblTotalTime")
 
     def Categories(self):
-        pass
+        return self.__GetTextElementById("cphMiddle_cphMain_pnlTags")
 
     def Ingredients(self):
         pass
