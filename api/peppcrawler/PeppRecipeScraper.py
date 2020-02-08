@@ -40,7 +40,22 @@ class PeppRecipeScraper:
         return self.__GetTextElementById("cphMiddle_cphMain_pnlTags")
 
     def Ingredients(self):
-        pass
+        ingredients = []
+        try:
+            ingredientGroups = self.driver.find_elements_by_class_name(
+                "inggroupitems")
+        except NoSuchElementException:
+            return ingredients
+        else:
+            for ingredientGroup in ingredientGroups:
+                label = self.__GetIngredientGroupLabel(ingredientGroup)
+                items = self.__GetIngredientItems(ingredientGroup)
+                ingredients.append({
+                    "group_name": label,
+                    "list": items
+                })
+
+        return ingredients
 
     def Instructions(self):
         pass
@@ -66,3 +81,25 @@ class PeppRecipeScraper:
             return ""
         else:
             return textElement.text
+
+    def __GetIngredientGroupLabel(self, ingredientGroup):
+        try:
+            labelElement = ingredientGroup.find_element_by_xpath(
+                "preceding::h4")
+        except NoSuchElementException:
+            return ""
+        else:
+            return labelElement.text
+
+    def __GetIngredientItems(self, ingredientGroup):
+        items = []
+        itemElements = ingredientGroup.find_elements_by_class_name("item")
+        for itemElement in itemElements:
+            quantity = itemElement.find_element_by_class_name(
+                "ingquantity").text
+            item = itemElement.find_element_by_class_name("content").text
+            if quantity != "":
+                item = re.sub(rf'{quantity} ?', '', item)
+
+            items.append({"quantity": quantity, "item": item})
+        return items

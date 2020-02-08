@@ -65,3 +65,8 @@ def test_scrapeCategories(scraper):
 def test_scrapeImageSrc(scraper):
     actualImageSrc = scraper.Image()
     assert expectedRecipe["image"] == actualImageSrc
+
+
+def test_scrapeIngredients(scraper):
+    actualIngredients = scraper.Ingredients()
+    assert expectedRecipe["ingredients"] == actualIngredients
