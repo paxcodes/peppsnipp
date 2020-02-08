@@ -20,15 +20,21 @@ def slugify(value):
     return re.sub(r'[-\s]+', '', value.title())
 
 
+prevSlug = ""
+suffix = 2
+
+
 def generateFileName(title, format):
+    global prevSlug, suffix
     fileName = slugify(title)
-    suffix = 2
-    while True:
-        if not path.exists(path.join("output", format, f"{fileName}.json")):
-            return fileName
-        else:
-            fileName = f"{fileName}{suffix}"
-            suffix += 1
+    if fileName == prevSlug:
+        fileName = f"{fileName}{suffix}"
+        suffix += 1
+    else:
+        prevSlug = fileName
+        suffix = 2
+
+    return fileName
 
 
 def saveRecipe(recipe, format):

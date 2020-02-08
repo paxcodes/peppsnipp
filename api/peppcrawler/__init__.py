@@ -1,5 +1,6 @@
 import os
 import time
+import re
 from collections import OrderedDict
 
 from selenium import webdriver
@@ -31,7 +32,7 @@ class PepperplateCrawler:
 
     def startDriver(self):
         options = webdriver.ChromeOptions()
-        # options.add_argument("--headless")
+        options.add_argument("--headless")
 
         print('Browser: Starting...')
         driver = webdriver.Chrome(
@@ -103,10 +104,20 @@ class PepperplateCrawler:
     def SnipRecipePages(self, recipeLinks):
         for i, recipeLink in enumerate(recipeLinks):
             self.driver.get(recipeLink)
-            fileName = generateFileName(self.driver.title, "p")
-            self.driver.save_screenshot(os.path.join(
-                PYTHON_APP_DIR, "output", "p", f"{fileName}.png"))
+            title = re.sub(r'^Pepperplate - ', '', self.driver.title)
+            fileName = generateFileName(title, "p")
+            self.__GetFullScreenshot(fileName)
             print(f"{i}: Snipped {self.driver.title}")
+
+    def __GetFullScreenshot(self, fileName):
+        path = os.path.join(
+            PYTHON_APP_DIR, "output", "p", f"{fileName}.png")
+        requiredWidth = self.driver.execute_script(
+            'return document.body.parentNode.scrollWidth')
+        requiredHeight = self.driver.execute_script(
+            'return document.body.parentNode.scrollHeight')
+        self.driver.set_window_size(requiredWidth, requiredHeight)
+        self.driver.find_element_by_class_name('recipedet').screenshot(path)
 
     def JsonifyRecipePages(self, recipeLinks):
         for recipeLink in recipeLinks:
