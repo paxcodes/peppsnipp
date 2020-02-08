@@ -78,6 +78,7 @@ class PepperplateCrawler:
         return int(recipeTotalString.split()[0])
 
     def FetchRecipeLinks(self):
+        print(f"Fetching recipe links...")
         self.driver.find_element_by_id("cphMiddle_lbSortAlpha").click()
         self.__LoadAllRecipes()
         recipeLinks = []
