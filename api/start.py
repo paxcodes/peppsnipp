@@ -1,18 +1,23 @@
 from os import getenv
 
-from dotenv import load_dotenv
-
 from peppcrawler import PepperplateCrawler
 from utils import askFormat
 from utils import getRecipeLinks
 
-load_dotenv()
-kPepperplateEmail = getenv("PEPPERPLATE_EMAIL")
-kPepperplatePw = getenv("PEPPERPLATE_PW")
 format = askFormat()
-
 crawler = PepperplateCrawler()
-crawler.Login(kPepperplateEmail, kPepperplatePw)
+crawler.visitLoginPage()
+
+while True:
+    kPepperplateEmail = input("Pepperplate Email: ")
+    kPepperplatePw = input("Pepperplate Password: ")
+    successful, message = crawler.loginToPepperplate(
+        kPepperplateEmail, kPepperplatePw)
+    if successful:
+        break
+    else:
+        print(message)
+
 recipeLinks = getRecipeLinks(crawler)
 crawler.ProcessRecipeLinks(recipeLinks, format)
 
