@@ -60,7 +60,7 @@ def getRecipeLinks(crawler):
 def askFormat():
     while True:
         format = input(
-            "What format would you like:\n[j]son\n[p]ng screenshots\n[b]oth\n>> ")
+            "What export format would you like:\n[j]son\n[p]ng screenshots\n[b]oth\n>> ")
         format = format.strip()
         if format in "jbp":
             return format

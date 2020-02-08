@@ -55,13 +55,26 @@ class PepperplateCrawler:
         }
 
     def loginToPepperplate(self, email, password):
+        print("Entering credentials...")
         self.__TypeCredentials(email, password)
         self.__AcceptCookies()
 
+        print("Submitting credentials...")
         self.driver.find_element_by_id(
             'cphMain_loginForm_ibSubmit').click()
 
-        return True
+        try:
+            WebDriverWait(self.driver, 10).until(
+                EC.visibility_of_element_located((By.ID, 'lblName')))
+        except TimeoutException:
+            message = self.__GetErrorMessage()
+            return False, message
+        else:
+            return True, "Success!"
+
+    def __GetErrorMessage(self):
+        errorsContainer = self.driver.find_element_by_class_name("errors")
+        return errorsContainer.find_element_by_xpath("descendant::li").text
 
     def Login(self, email, password):
         self.visitLoginPage()
@@ -160,8 +173,10 @@ class PepperplateCrawler:
     def __TypeCredentials(self, email, password):
         email_field = self.driver.find_element_by_name(
             'ctl00$cphMain$loginForm$tbEmail')
+        email_field.clear()
         email_field.send_keys(email)
 
         password_field = self.driver.find_element_by_name(
             'ctl00$cphMain$loginForm$tbPassword')
+        password_field.clear()
         password_field.send_keys(password)
