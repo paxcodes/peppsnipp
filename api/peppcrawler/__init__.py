@@ -127,9 +127,10 @@ class PepperplateCrawler:
         self.driver.find_element_by_class_name('recipedet').screenshot(path)
 
     def JsonifyRecipePages(self, recipeLinks):
-        for recipeLink in recipeLinks:
+        for i, recipeLink in enumerate(recipeLinks):
             recipe = self.ScrapeRecipePage(recipeLink)
             saveRecipeAsJson(recipe)
+            print(f"{i}: Snipped {recipe['title']}")
 
     def ScrapeRecipePage(self, recipeLink):
         self.driver.get(recipeLink)
