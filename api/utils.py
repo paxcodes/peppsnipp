@@ -37,9 +37,9 @@ def generateFileName(title, format):
     return fileName
 
 
-def saveRecipe(recipe, format):
-    fileName = generateFileName(recipe["title"], format)
-    with open(path.join("output", format, f"{fileName}.json"), "a") as f:
+def saveRecipeAsJson(recipe):
+    fileName = generateFileName(recipe["title"], "j")
+    with open(path.join("output", "j", f"{fileName}.json"), "a") as f:
         json.dump(recipe, f, indent=3)
 
 

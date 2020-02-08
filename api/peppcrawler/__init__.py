@@ -13,7 +13,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from dotenv import load_dotenv
 
 from peppcrawler.PeppRecipeScraper import PeppRecipeScraper
-from utils import saveRecipe
+from utils import saveRecipeAsJson
 from utils import generateFileName
 from definitions import PYTHON_APP_DIR
 
@@ -122,7 +122,7 @@ class PepperplateCrawler:
     def JsonifyRecipePages(self, recipeLinks):
         for recipeLink in recipeLinks:
             recipe = self.ScrapeRecipePage(recipeLink)
-            saveRecipe(recipe)
+            saveRecipeAsJson(recipe)
 
     def ScrapeRecipePage(self, recipeLink):
         self.driver.get(recipeLink)
