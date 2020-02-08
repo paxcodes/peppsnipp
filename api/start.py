@@ -14,6 +14,6 @@ format = askFormat()
 crawler = PepperplateCrawler()
 crawler.Login(kPepperplateEmail, kPepperplatePw)
 recipeLinks = getRecipeLinks(crawler)
-crawler.ProcessRecipeLinks(format)
+crawler.ProcessRecipeLinks(recipeLinks, format)
 
 crawler.quitDriver()

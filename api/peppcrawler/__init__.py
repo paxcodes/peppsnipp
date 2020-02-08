@@ -13,6 +13,8 @@ from dotenv import load_dotenv
 
 from peppcrawler.PeppRecipeScraper import PeppRecipeScraper
 from utils import saveRecipe
+from utils import generateFileName
+from definitions import PYTHON_APP_DIR
 
 driverPath = os.path.dirname(
     os.path.realpath(__file__)) + '/driver'
@@ -89,11 +91,22 @@ class PepperplateCrawler:
 
         return recipeLinks
 
-    def ProcessRecipeLinks(self, recipeLinks):
-        pass
+    def ProcessRecipeLinks(self, recipeLinks, format):
+        if "j" == format:
+            self.JsonifyRecipePages(recipeLinks)
+        elif "p" == format:
+            self.SnipRecipePages(recipeLinks)
+        elif "b" == format:
+            self.JsonifyRecipePages(recipeLinks)
+            self.SnipRecipePages(recipeLinks)
 
     def SnipRecipePages(self, recipeLinks):
-        pass
+        for i, recipeLink in enumerate(recipeLinks):
+            self.driver.get(recipeLink)
+            fileName = generateFileName(self.driver.title, "p")
+            self.driver.save_screenshot(os.path.join(
+                PYTHON_APP_DIR, "output", "p", f"{fileName}.png"))
+            print(f"{i}: Snipped {self.driver.title}")
 
     def JsonifyRecipePages(self, recipeLinks):
         for recipeLink in recipeLinks:
