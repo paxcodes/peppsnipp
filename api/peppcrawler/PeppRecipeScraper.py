@@ -37,7 +37,8 @@ class PeppRecipeScraper:
         return self.__GetTextElementById("cphMiddle_cphMain_lblTotalTime")
 
     def Categories(self):
-        return self.__GetTextElementById("cphMiddle_cphMain_pnlTags")
+        text = self.__GetTextElementById("cphMiddle_cphMain_pnlTags")
+        return re.sub(r'^CATEGORIES ', '', text)
 
     def Ingredients(self):
         ingredients = []
