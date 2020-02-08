@@ -48,7 +48,7 @@ class PeppRecipeScraper:
             return ingredients
         else:
             for ingredientGroup in ingredientGroups:
-                label = self.__GetIngredientGroupLabel(ingredientGroup)
+                label = self.__GetGroupLabel(ingredientGroup)
                 items = self.__GetIngredientItems(ingredientGroup)
                 ingredients.append({
                     "group_name": label,
@@ -82,9 +82,9 @@ class PeppRecipeScraper:
         else:
             return textElement.text
 
-    def __GetIngredientGroupLabel(self, ingredientGroup):
+    def __GetGroupLabel(self, groupElement):
         try:
-            labelElement = ingredientGroup.find_element_by_xpath(
+            labelElement = groupElement.find_element_by_xpath(
                 "preceding::h4")
         except NoSuchElementException:
             return ""
