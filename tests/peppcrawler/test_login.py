@@ -22,7 +22,7 @@ def test_canLoginToPepperplate(crawler):
     email = getenv("PEPPERPLATE_EMAIL")
     password = getenv("PEPPERPLATE_PW")
     crawler.visitLoginPage()
-    success = crawler.loginToPepperplate(email, password)
+    result = crawler.loginToPepperplate(email, password)
     crawler.quitDriver()
 
-    assert True == success
+    assert True, "Success!" == result
