@@ -1,14 +1,8 @@
 .env
 
 .venv
-.vscode
 __pycache__
 .pytest_cache
-
-.vscode 
-
-.env
 *.pyc
-driver
 
-Procfile.debug
+.vscode
