@@ -181,3 +181,6 @@ class PepperplateCrawler:
             'ctl00$cphMain$loginForm$tbPassword')
         password_field.clear()
         password_field.send_keys(password)
+
+    def SetForm(self, form):
+        self.form = form
