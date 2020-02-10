@@ -48,19 +48,20 @@ class PepperplateCrawler:
         print('Browser: Quit!...')
 
     def visitLoginPage(self):
-        print('Page: Loading Login Page...')
+        self.__Log('🌏 Loading `Pepperplate` Login Page...')
         self.driver.get(self.loginURL)
-        print('Page: Loaded!')
+        self.__Log('🌏 `Pepperplate` Login Page Loaded!')
+        self.__Log('Enter your credentials in the form above ⬆️')
         return {
             "title": self.driver.title
         }
 
     def loginToPepperplate(self, email, password):
-        print("Entering credentials...")
+        self.__Log("⌨️ Entering login credentials...")
         self.__TypeCredentials(email, password)
         self.__AcceptCookies()
 
-        print("Submitting credentials...")
+        self.__Log("⌨️ Submitting credentials...")
         self.driver.find_element_by_id(
             'cphMain_loginForm_ibSubmit').click()
 
@@ -69,7 +70,7 @@ class PepperplateCrawler:
                 EC.visibility_of_element_located((By.ID, 'lblName')))
         except TimeoutException:
             message = self.__GetErrorMessage()
-            return False, message
+            return False, f"🛑 {message}"
         else:
             return True, "Success!"
 
@@ -92,7 +93,7 @@ class PepperplateCrawler:
         return int(recipeTotalString.split()[0])
 
     def FetchRecipeLinks(self):
-        print(f"Fetching recipe links...")
+        self.__Log(f"✨1 Fetching recipe links...")
         self.driver.find_element_by_id("cphMiddle_lbSortAlpha").click()
         self.__LoadAllRecipes()
         recipeLinks = []
@@ -103,14 +104,17 @@ class PepperplateCrawler:
         for i, anchorTag in enumerate(anchorTags, start=1):
             link = anchorTag.get_attribute("href")
             recipeLinks.append(link)
-            print(f"{i}: {anchorTag.text} {link}")
+            self.__Log(f"{i}: {anchorTag.text} {link}")
 
         return recipeLinks
 
     def ProcessRecipeLinks(self, recipeLinks, format):
+        totalRecipes = len(recipeLinks)
         for i, recipeLink in enumerate(recipeLinks, start=1):
+            self.__Log(f"🌏 {i}/{totalRecipes}: Loading recipe page...")
             self.driver.get(recipeLink)
             title = re.sub(r'^Pepperplate - ', '', self.driver.title)
+            self.__Log(f"🕜 {i}/{totalRecipes}: Exporting {title}...")
             fileName = generateFileName(title)
             if format in 'jb':
                 recipe = self.ScrapeRecipePage()
@@ -119,7 +123,7 @@ class PepperplateCrawler:
             if format in 'pb':
                 self.__GetFullScreenshot(fileName)
 
-            print(f"{i}: Exported {title}")
+            self.__Log(f"✅ {i}/{totalRecipes}: Exported {title}")
 
     def __GetFullScreenshot(self, fileName):
         path = os.path.join(os.path.expanduser(
@@ -152,6 +156,7 @@ class PepperplateCrawler:
         return recipe
 
     def __LoadAllRecipes(self):
+        counter = 2
         while True:
             try:
                 loadMore = WebDriverWait(self.driver, 10).until(
@@ -160,7 +165,9 @@ class PepperplateCrawler:
                 break
             else:
                 self.driver.execute_script("arguments[0].click();", loadMore)
-                time.sleep(2)
+                self.__Log(f"✨{counter} Fetching more recipe links...")
+                counter += 1
+                time.sleep(1)
 
     def __AcceptCookies(self):
         try:
@@ -181,3 +188,12 @@ class PepperplateCrawler:
             'ctl00$cphMain$loginForm$tbPassword')
         password_field.clear()
         password_field.send_keys(password)
+
+    def SetForm(self, form):
+        self.form = form
+
+    def __Log(self, message):
+        if self.form is None:
+            print(message)
+        else:
+            self.form.Log(message)
