@@ -1,8 +1,10 @@
 from PySide2.QtWidgets import QDialog, QVBoxLayout
 from PySide2.QtWidgets import QLabel, QLineEdit, QPushButton
+from PySide2.QtCore import QMetaObject, Qt
 
 from peppcrawler import PepperplateCrawler
 from gui.LoggingOutput import LoggingOutput
+from gui.ProcessRunnable import ProcessRunnable
 from utils import getRecipeLinks
 
 
@@ -43,13 +45,20 @@ class Form(QDialog):
         self.button.clicked.connect(self.StartProcess)
 
     def StartProcess(self):
-        successful, message = self.crawler.loginToPepperplate(
-            self.email.text(), self.password.text())
+        self.process = ProcessRunnable(target=self.LoginToPepperplate,
+                                       args=(self.email.text(), self.password.text()))
+        self.process.start()
+
+    def LoginToPepperplate(self, email, password):
+        successful, message = self.crawler.loginToPepperplate(email, password)
         if successful:
-            recipeLinks = getRecipeLinks(self.crawler)
+            # recipeLinks = getRecipeLinks(self.crawler)
             # self.crawler.ProcessRecipeLinks(recipeLinks, format)
+            QMetaObject.invokeMethod(self.logs, "append", Qt.QueuedConnection,
+                                     Q_ARG(str, message))
         else:
-            self.Log(message)
+            QMetaObject.invokeMethod(self.logs, "append", Qt.QueuedConnection,
+                                     Q_ARG(str, message))
 
     def Log(self, message):
         self.processMessage.setText(message)
