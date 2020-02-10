@@ -67,11 +67,11 @@ def createDirectory(pathPieces):
 def getRecipeLinks(crawler):
     if path.exists(pathToRecipeLinks):
         with open(pathToRecipeLinks, "r") as f:
-            return json.load(f)
+            return json.load(f), "Recipe Links have already been scraped!"
     else:
         recipeLinks = crawler.FetchRecipeLinks()
         saveRecipeLinks(recipeLinks)
-        return recipeLinks
+        return recipeLinks, "Finished scraping recipe links!"
 
 
 def askFormat():

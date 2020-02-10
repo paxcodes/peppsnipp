@@ -1,7 +1,10 @@
-from PySide2.QtWidgets import QDialog, QVBoxLayout
-from PySide2.QtWidgets import QLabel, QLineEdit, QPushButton
+from PyQt5.QtWidgets import QDialog, QVBoxLayout
+from PyQt5.QtWidgets import QLabel, QLineEdit, QPushButton
+from PyQt5.QtCore import QMetaObject, Qt, Q_ARG
 
 from peppcrawler import PepperplateCrawler
+from gui.LoggingOutput import LoggingOutput
+from gui.ProcessRunnable import ProcessRunnable
 from utils import getRecipeLinks
 
 
@@ -25,7 +28,7 @@ class Form(QDialog):
         self.passwordLabel = QLabel("Pepperplate Password")
         self.password = QLineEdit()
         self.password.setEchoMode(QLineEdit.Password)
-        self.processMessage = QLabel("")
+        self.logs = LoggingOutput(self)
         self.button = QPushButton("Export")
 
     def CreateLayout(self):
@@ -35,20 +38,26 @@ class Form(QDialog):
         layout.addWidget(self.passwordLabel)
         layout.addWidget(self.password)
         layout.addWidget(self.button)
-        layout.addWidget(self.processMessage)
+        layout.addWidget(self.logs)
         self.setLayout(layout)
 
     def RegisterExportAction(self):
         self.button.clicked.connect(self.StartProcess)
 
     def StartProcess(self):
-        successful, message = self.crawler.loginToPepperplate(
-            self.email.text(), self.password.text())
+        self.process = ProcessRunnable(target=self.LoginToPepperplate,
+                                       args=(self.email.text(), self.password.text()))
+        self.process.start()
+
+    def LoginToPepperplate(self, email, password):
+        successful, message = self.crawler.loginToPepperplate(email, password)
         if successful:
-            recipeLinks = getRecipeLinks(self.crawler)
-            # self.crawler.ProcessRecipeLinks(recipeLinks, format)
+            recipeLinks, message = getRecipeLinks(self.crawler)
+            self.Log(message)
+            self.crawler.ProcessRecipeLinks(recipeLinks, format)
         else:
             self.Log(message)
 
     def Log(self, message):
-        self.processMessage.setText(message)
+        QMetaObject.invokeMethod(self.logs, "append", Qt.QueuedConnection,
+                                 Q_ARG(str, message))
