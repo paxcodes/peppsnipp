@@ -11,7 +11,7 @@ class Form(QDialog):
 
         self.AddWidgets()
         self.CreateLayout()
-        self.resize(350, 250)
+        self.resize(350, 600)
         self.setWindowTitle("Pepperplate Snipper")
         self.RegisterExportAction()
 
