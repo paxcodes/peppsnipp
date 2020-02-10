@@ -1,6 +1,6 @@
-from PySide2.QtWidgets import QDialog, QVBoxLayout
-from PySide2.QtWidgets import QLabel, QLineEdit, QPushButton
-from PySide2.QtCore import QMetaObject, Qt
+from PyQt5.QtWidgets import QDialog, QVBoxLayout
+from PyQt5.QtWidgets import QLabel, QLineEdit, QPushButton
+from PyQt5.QtCore import QMetaObject, Qt, Q_ARG
 
 from peppcrawler import PepperplateCrawler
 from gui.LoggingOutput import LoggingOutput

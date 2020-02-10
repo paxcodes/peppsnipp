@@ -1,6 +1,6 @@
-from PySide2.QtWidgets import QTextEdit
-from PySide2.QtCore import Slot
-from PySide2.QtGui import QTextCursor
+from PyQt5.QtWidgets import QTextEdit
+from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtGui import QTextCursor
 
 
 class LoggingOutput(QTextEdit):
@@ -10,7 +10,7 @@ class LoggingOutput(QTextEdit):
         self.setLineWrapMode(self.NoWrap)
         self.insertPlainText("")
 
-    @Slot(str)
+    @pyqtSlot(str)
     def append(self, text):
         self.moveCursor(QTextCursor.End)
         current = self.toPlainText()
