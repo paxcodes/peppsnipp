@@ -93,7 +93,7 @@ class PepperplateCrawler:
         return int(recipeTotalString.split()[0])
 
     def FetchRecipeLinks(self):
-        self.__Log(f"✨ Fetching recipe links...")
+        self.__Log(f"✨1 Fetching recipe links...")
         self.driver.find_element_by_id("cphMiddle_lbSortAlpha").click()
         self.__LoadAllRecipes()
         recipeLinks = []
@@ -111,9 +111,10 @@ class PepperplateCrawler:
     def ProcessRecipeLinks(self, recipeLinks, format):
         totalRecipes = len(recipeLinks)
         for i, recipeLink in enumerate(recipeLinks, start=1):
-            self.__Log(f"🕜 {i}/{totalRecipes}: Exporting {title}...")
+            self.__Log(f"🌏 {i}/{totalRecipes}: Loading recipe page...")
             self.driver.get(recipeLink)
             title = re.sub(r'^Pepperplate - ', '', self.driver.title)
+            self.__Log(f"🕜 {i}/{totalRecipes}: Exporting {title}...")
             fileName = generateFileName(title)
             if format in 'jb':
                 recipe = self.ScrapeRecipePage()
@@ -155,6 +156,7 @@ class PepperplateCrawler:
         return recipe
 
     def __LoadAllRecipes(self):
+        counter = 2
         while True:
             try:
                 loadMore = WebDriverWait(self.driver, 10).until(
@@ -163,7 +165,8 @@ class PepperplateCrawler:
                 break
             else:
                 self.driver.execute_script("arguments[0].click();", loadMore)
-                self.__Log(f"✨ Fetching more recipe links...")
+                self.__Log(f"✨{counter} Fetching more recipe links...")
+                counter += 1
                 time.sleep(1)
 
     def __AcceptCookies(self):
