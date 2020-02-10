@@ -11,6 +11,8 @@ class Form(QDialog):
 
         self.AddWidgets()
         self.CreateLayout()
+        self.resize(350, 250)
+        self.setWindowTitle("Pepperplate Snipper")
         self.RegisterExportAction()
 
         self.crawler = PepperplateCrawler()
@@ -18,15 +20,19 @@ class Form(QDialog):
         self.crawler.visitLoginPage()
 
     def AddWidgets(self):
-        self.email = QLineEdit("Pepperplate Email")
-        self.password = QLineEdit("Pepperplate Password")
+        self.emailLabel = QLabel("Pepperplate Email")
+        self.email = QLineEdit()
+        self.passwordLabel = QLabel("Pepperplate Password")
+        self.password = QLineEdit()
         self.password.setEchoMode(QLineEdit.Password)
         self.processMessage = QLabel("")
         self.button = QPushButton("Export")
 
     def CreateLayout(self):
         layout = QVBoxLayout()
+        layout.addWidget(self.emailLabel)
         layout.addWidget(self.email)
+        layout.addWidget(self.passwordLabel)
         layout.addWidget(self.password)
         layout.addWidget(self.button)
         layout.addWidget(self.processMessage)
