@@ -164,7 +164,7 @@ class PepperplateCrawler:
             else:
                 self.driver.execute_script("arguments[0].click();", loadMore)
                 self.__Log(f"✨ Fetching more recipe links...")
-                time.sleep(2)
+                time.sleep(1)
 
     def __AcceptCookies(self):
         try:
