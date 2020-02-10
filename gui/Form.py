@@ -2,6 +2,7 @@ from PySide2.QtWidgets import QDialog, QVBoxLayout
 from PySide2.QtWidgets import QLabel, QLineEdit, QPushButton
 
 from peppcrawler import PepperplateCrawler
+from gui.LoggingOutput import LoggingOutput
 from utils import getRecipeLinks
 
 
@@ -25,7 +26,7 @@ class Form(QDialog):
         self.passwordLabel = QLabel("Pepperplate Password")
         self.password = QLineEdit()
         self.password.setEchoMode(QLineEdit.Password)
-        self.processMessage = QLabel("")
+        self.logs = LoggingOutput(self)
         self.button = QPushButton("Export")
 
     def CreateLayout(self):
@@ -35,7 +36,7 @@ class Form(QDialog):
         layout.addWidget(self.passwordLabel)
         layout.addWidget(self.password)
         layout.addWidget(self.button)
-        layout.addWidget(self.processMessage)
+        layout.addWidget(self.logs)
         self.setLayout(layout)
 
     def RegisterExportAction(self):
