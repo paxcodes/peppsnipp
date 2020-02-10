@@ -111,6 +111,7 @@ class PepperplateCrawler:
     def ProcessRecipeLinks(self, recipeLinks, format):
         totalRecipes = len(recipeLinks)
         for i, recipeLink in enumerate(recipeLinks, start=1):
+            self.__Log(f"🕜 {i}/{totalRecipes}: Exporting {title}...")
             self.driver.get(recipeLink)
             title = re.sub(r'^Pepperplate - ', '', self.driver.title)
             fileName = generateFileName(title)
@@ -162,6 +163,7 @@ class PepperplateCrawler:
                 break
             else:
                 self.driver.execute_script("arguments[0].click();", loadMore)
+                self.__Log(f"✨ Fetching more recipe links...")
                 time.sleep(2)
 
     def __AcceptCookies(self):
