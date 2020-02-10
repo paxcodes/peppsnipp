@@ -52,13 +52,12 @@ class Form(QDialog):
     def LoginToPepperplate(self, email, password):
         successful, message = self.crawler.loginToPepperplate(email, password)
         if successful:
-            # recipeLinks = getRecipeLinks(self.crawler)
-            # self.crawler.ProcessRecipeLinks(recipeLinks, format)
-            QMetaObject.invokeMethod(self.logs, "append", Qt.QueuedConnection,
-                                     Q_ARG(str, message))
+            recipeLinks, message = getRecipeLinks(self.crawler)
+            self.Log(message)
+            self.crawler.ProcessRecipeLinks(recipeLinks, format)
         else:
-            QMetaObject.invokeMethod(self.logs, "append", Qt.QueuedConnection,
-                                     Q_ARG(str, message))
+            self.Log(message)
 
     def Log(self, message):
-        self.processMessage.setText(message)
+        QMetaObject.invokeMethod(self.logs, "append", Qt.QueuedConnection,
+                                 Q_ARG(str, message))
