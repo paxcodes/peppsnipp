@@ -11,6 +11,8 @@ class Form(QDialog):
 
         self.AddWidgets()
         self.CreateLayout()
+        self.resize(350, 250)
+        self.setWindowTitle("Pepperplate Snipper")
         self.RegisterExportAction()
 
         self.crawler = PepperplateCrawler()
