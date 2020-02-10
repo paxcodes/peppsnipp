@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QDialog, QVBoxLayout
+from PyQt5.QtWidgets import QDialog, QVBoxLayout, QHBoxLayout, QRadioButton
 from PyQt5.QtWidgets import QLabel, QLineEdit, QPushButton
 from PyQt5.QtCore import QMetaObject, Qt, Q_ARG
 
@@ -23,6 +23,17 @@ class Form(QDialog):
         self.crawler.visitLoginPage()
 
     def AddWidgets(self):
+        self.formatLabel = QLabel("Export Format")
+        self.jsonRadioButton = QRadioButton("JSON")
+        self.jsonRadioButton.value = self.exportFormat = "j"
+        self.jsonRadioButton.setChecked(True)
+
+        self.pngRadioButton = QRadioButton("PNG")
+        self.pngRadioButton.value = "p"
+        self.bothRadioButton = QRadioButton("Both")
+        self.bothRadioButton.value = "b"
+        self.__RegisterRadioButtonToggled()
+
         self.emailLabel = QLabel("Pepperplate Email")
         self.email = QLineEdit()
         self.passwordLabel = QLabel("Pepperplate Password")
@@ -33,6 +44,14 @@ class Form(QDialog):
 
     def CreateLayout(self):
         layout = QVBoxLayout()
+        layout.addWidget(self.formatLabel)
+
+        rbLayout = QHBoxLayout()
+        rbLayout.addWidget(self.jsonRadioButton)
+        rbLayout.addWidget(self.pngRadioButton)
+        rbLayout.addWidget(self.bothRadioButton)
+        layout.addLayout(rbLayout)
+
         layout.addWidget(self.emailLabel)
         layout.addWidget(self.email)
         layout.addWidget(self.passwordLabel)
@@ -54,10 +73,18 @@ class Form(QDialog):
         if successful:
             recipeLinks, message = getRecipeLinks(self.crawler)
             self.Log(message)
-            self.crawler.ProcessRecipeLinks(recipeLinks, format)
+            self.crawler.ProcessRecipeLinks(recipeLinks, self.exportFormat)
         else:
             self.Log(message)
 
     def Log(self, message):
         QMetaObject.invokeMethod(self.logs, "append", Qt.QueuedConnection,
                                  Q_ARG(str, message))
+
+    def __RegisterRadioButtonToggled(self):
+        self.jsonRadioButton.toggled.connect(self.SetFormat)
+
+    def SetFormat(self):
+        radioButton = self.sender()
+        if radioButton.isChecked():
+            self.exportFormat = radioButton.value
