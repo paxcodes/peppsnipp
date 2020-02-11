@@ -193,7 +193,7 @@ class PepperplateCrawler:
         self.form = form
 
     def __Log(self, message):
-        if self.form is None:
-            print(message)
-        else:
+        if hasattr(self, 'form'):
             self.form.Log(message)
+        else:
+            print(message)
