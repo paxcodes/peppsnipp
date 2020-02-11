@@ -20,7 +20,7 @@ while True:
     else:
         print(message)
 
-recipeLinks = getRecipeLinks(crawler)
+recipeLinks, message = getRecipeLinks(crawler)
 crawler.ProcessRecipeLinks(recipeLinks, format)
 
 crawler.quitDriver()
