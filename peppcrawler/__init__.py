@@ -99,10 +99,15 @@ class PepperplateCrawler:
         anchorTags = self.driver.find_elements_by_css_selector(
             '.item > p > a')
 
+        totalAnchorTags = len(anchorTags)
+        self.__Log(f"🕜 Scraping {totalAnchorTags} recipe links...")
         for i, anchorTag in enumerate(anchorTags, start=1):
             link = anchorTag.get_attribute("href")
             recipeLinks.append(link)
             print(f"{i}: {anchorTag.text} {link}")
+            if not i % 100:
+                self.__Log(
+                    f"🕜 Retrieved {i} of {totalAnchorTags} recipe links...")
 
         return recipeLinks
 
