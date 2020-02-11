@@ -5,7 +5,9 @@ import json
 import unicodedata
 import re
 
-pathToRecipeLinks = "output/_recipeLinks.json"
+from definitions import PYTHON_APP_DIR
+
+pathToRecipeLinks = path.join(PYTHON_APP_DIR, "output", "_recipeLinks.json")
 pepperplateDir = "~/Pepperplate"
 
 
