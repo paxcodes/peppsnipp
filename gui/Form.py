@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QHBoxLayout, QRadioButton
-from PyQt5.QtWidgets import QLabel, QLineEdit, QPushButton
+from PyQt5.QtWidgets import QLabel, QLineEdit, QPushButton, QApplication
 from PyQt5.QtCore import QMetaObject, Qt, Q_ARG
+from PyQt5.QtCore import pyqtSlot
 
 from peppcrawler import PepperplateCrawler
 from gui.LoggingOutput import LoggingOutput
@@ -64,6 +65,8 @@ class Form(QDialog):
         self.button.clicked.connect(self.StartProcess)
 
     def StartProcess(self):
+        QMetaObject.invokeMethod(self, "EnableForm", Qt.QueuedConnection,
+                                 Q_ARG(bool, False))
         self.process = ProcessRunnable(target=self.LoginToPepperplate,
                                        args=(self.email.text(), self.password.text()))
         self.process.start()
@@ -75,6 +78,7 @@ class Form(QDialog):
             self.Log(message)
             self.crawler.ProcessRecipeLinks(recipeLinks, self.exportFormat)
         else:
+            self.__EnableForm(True)
             self.Log(message)
 
     def Log(self, message):
@@ -90,3 +94,9 @@ class Form(QDialog):
         radioButton = self.sender()
         if radioButton.isChecked():
             self.exportFormat = radioButton.value
+
+    @pyqtSlot(bool)
+    def EnableForm(self, enabled):
+        self.button.setEnabled(enabled)
+        self.email.setEnabled(enabled)
+        self.password.setEnabled(enabled)
