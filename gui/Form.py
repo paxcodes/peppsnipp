@@ -83,6 +83,8 @@ class Form(QDialog):
 
     def __RegisterRadioButtonToggled(self):
         self.jsonRadioButton.toggled.connect(self.SetFormat)
+        self.pngRadioButton.toggled.connect(self.SetFormat)
+        self.bothRadioButton.toggled.connect(self.SetFormat)
 
     def SetFormat(self):
         radioButton = self.sender()
