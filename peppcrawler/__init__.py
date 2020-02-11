@@ -23,7 +23,7 @@ driverPath = os.path.dirname(
 
 class PepperplateCrawler:
     loginURL = "https://www.pepperplate.com/login.aspx"
-    chromeDriverPath = driverPath + '/ChromeDriver'
+    chromeDriverPath = os.path.join(driverPath, 'ChromeDriver')
 
     def __init__(self):
         self.driver = self.startDriver()
