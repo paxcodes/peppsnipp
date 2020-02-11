@@ -179,13 +179,13 @@ class PepperplateCrawler:
             element.click()
 
     def __TypeCredentials(self, email, password):
-        email_field = self.driver.find_element_by_name(
-            'ctl00$cphMain$loginForm$tbEmail')
+        email_field = self.driver.find_element_by_id(
+            'cphMain_loginForm_tbEmail')
         email_field.clear()
         email_field.send_keys(email)
 
-        password_field = self.driver.find_element_by_name(
-            'ctl00$cphMain$loginForm$tbPassword')
+        password_field = self.driver.find_element_by_id(
+            'cphMain_loginForm_tbPassword')
         password_field.clear()
         password_field.send_keys(password)
 
