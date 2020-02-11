@@ -78,7 +78,8 @@ class Form(QDialog):
             self.Log(message)
             self.crawler.ProcessRecipeLinks(recipeLinks, self.exportFormat)
         else:
-            self.__EnableForm(True)
+            QMetaObject.invokeMethod(self, "EnableForm", Qt.QueuedConnection,
+                                     Q_ARG(bool, True))
             self.Log(message)
 
     def Log(self, message):
