@@ -10,7 +10,6 @@ from selenium.common.exceptions import ElementClickInterceptedException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from dotenv import load_dotenv
 
 from peppcrawler.PeppRecipeScraper import PeppRecipeScraper
 from utils import saveRecipeAsJson
@@ -24,10 +23,9 @@ driverPath = os.path.dirname(
 
 class PepperplateCrawler:
     loginURL = "https://www.pepperplate.com/login.aspx"
-    chromeDriverPath = driverPath + '/ChromeDriver'
+    chromeDriverPath = os.path.join(driverPath, 'ChromeDriver')
 
     def __init__(self):
-        load_dotenv()
         self.driver = self.startDriver()
         self.recipeScraper = PeppRecipeScraper(self.driver)
 
